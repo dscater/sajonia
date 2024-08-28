@@ -26,29 +26,86 @@ const { props } = usePage();
 </script>
 <template>
     <Head title="Inicio"></Head>
-
-    <h4 class="text-center text-h4">
-        Bienvenid@ {{ props.auth.user.full_name }}
-    </h4>
-    <div
-        class="row"
-        v-if="props.auth.user && props.auth.user.tipo == 'POSTULANTE'"
-    >
-        <div class="col-md-3 mx-auto item_btn">
-            <a class="contenido_item">
-                Datos Personales <i class="fa fa-arrow-right"></i>
-            </a>
+    <!-- BEGIN breadcrumb -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
+    </ol>
+    <!-- END breadcrumb -->
+    <!-- BEGIN page-header -->
+    <h1 class="page-header">Panel</h1>
+    <!-- END page-header -->
+    <div class="row">
+        <div class="col-12">
+            <h4 class="text-center text-h4">
+                Bienvenid@ {{ props.auth.user.full_name }}
+            </h4>
         </div>
-        <div class="col-md-3 mx-auto item_btn">
-            <a class="contenido_item">
-                Evaluación <i class="fa fa-arrow-right"></i>
-            </a>
+    </div>
+    <div class="row">
+        <!-- BEGIN col-3 -->
+        <div class="col-xl-3 col-md-6">
+            <div class="widget widget-stats bg-blue">
+                <div class="stats-icon"><i class="fa fa-users"></i></div>
+                <div class="stats-info text-white">
+                    <h4>USUARIOS</h4>
+                    <p>0</p>
+                </div>
+                <div class="stats-link">
+                    <a href="javascript:;"
+                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
+                    ></a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3 mx-auto item_btn">
-            <a class="contenido_item">
-                Otros datos <i class="fa fa-arrow-right"></i>
-            </a>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-xl-3 col-md-6">
+            <div class="widget widget-stats bg-info">
+                <div class="stats-icon"><i class="fa fa-user-friends"></i></div>
+                <div class="stats-info text-white">
+                    <h4>CLIENTES</h4>
+                    <p>0</p>
+                </div>
+                <div class="stats-link">
+                    <a href="javascript:;"
+                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
+                    ></a>
+                </div>
+            </div>
         </div>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-xl-3 col-md-6">
+            <div class="widget widget-stats bg-orange">
+                <div class="stats-icon"><i class="fa fa-clipboard-list"></i></div>
+                <div class="stats-info text-white">
+                    <h4>VENTA DE LOTES</h4>
+                    <p>0</p>
+                </div>
+                <div class="stats-link">
+                    <a href="javascript:;"
+                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
+                    ></a>
+                </div>
+            </div>
+        </div>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-xl-3 col-md-6">
+            <div class="widget widget-stats bg-red">
+                <div class="stats-icon"><i class="fa fa-list"></i></div>
+                <div class="stats-info text-white">
+                    <h4>LOTES</h4>
+                    <p>0</p>
+                </div>
+                <div class="stats-link">
+                    <a href="javascript:;"
+                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
+                    ></a>
+                </div>
+            </div>
+        </div>
+        <!-- END col-3 -->
     </div>
 </template>
 <style scoped>

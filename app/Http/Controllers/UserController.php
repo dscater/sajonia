@@ -14,6 +14,26 @@ class UserController extends Controller
             "usuarios.edit",
             "usuarios.destroy",
 
+            "urbanizacions.index",
+            "urbanizacions.create",
+            "urbanizacions.edit",
+            "urbanizacions.destroy",
+
+            "manzanos.index",
+            "manzanos.create",
+            "manzanos.edit",
+            "manzanos.destroy",
+
+            "lotes.index",
+            "lotes.create",
+            "lotes.edit",
+            "lotes.destroy",
+
+            "planilla_cuotas.index",
+            "planilla_cuotas.create",
+            "planilla_cuotas.edit",
+            "planilla_cuotas.destroy",
+
             "configuracions.index",
             "configuracions.create",
             "configuracions.edit",

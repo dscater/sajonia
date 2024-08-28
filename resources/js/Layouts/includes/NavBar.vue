@@ -31,33 +31,56 @@ const open_menu_usuario = () => {
 onMounted(() => {
     url_assets = props.url_assets;
     url_principal = props.url_principal;
-    console.log(oUser);
 });
 </script>
 <template>
-    <div class="navbar-item navbar-user dropdown">
-        <a
-            href="#"
-            class="navbar-link dropdown-toggle d-flex align-items-center"
-            :class="[open_perfil ? 'show' : '']"
-            data-bs-toggle="dropdown"
-            @click="open_menu_usuario()"
-        >
-            <img :src="oUser.url_foto" alt="" />
-            <span class="d-none d-md-inline">{{ oUser.usuario }}</span>
-            <b class="caret ms-6px"></b>
-        </a>
-        <div
-            class="dropdown-menu dropdown-menu-end me-1"
-            :class="[open_perfil ? 'show' : '']"
-        >
-            <a href="#" class="dropdown-item">Perfil</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" @click.prevent="logout()" class="dropdown-item"
-                >Cerrar sesión</a
+    <!-- BEGIN #header -->
+    <div id="header" class="app-header" data-bs-theme="dark">
+        <!-- BEGIN navbar-header -->
+        <div class="navbar-header">
+            <a href="index.html" class="navbar-brand"
+                ><img :src="oConfiguracion.url_logo" alt=""></a
             >
+            <button
+                type="button"
+                class="navbar-mobile-toggler"
+                data-toggle="app-sidebar-mobile"
+            >
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
+        <!-- END navbar-header -->
+        <!-- BEGIN header-nav -->
+        <div class="navbar-nav">
+            <div class="navbar-item navbar-user dropdown">
+                <a
+                    href="#"
+                    class="navbar-link dropdown-toggle d-flex align-items-center"
+                    :class="[open_perfil ? 'show' : '']"
+                    data-bs-toggle="dropdown"
+                    @click="open_menu_usuario()"
+                >
+                    <img :src="oUser.url_foto" alt="" />
+                    <span class="d-none d-md-inline">{{ oUser.usuario }}</span>
+                    <b class="caret ms-6px"></b>
+                </a>
+                <div
+                    class="dropdown-menu dropdown-menu-end me-1"
+                    :class="[open_perfil ? 'show' : '']"
+                >
+                    <a href="#" class="dropdown-item">Perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" @click.prevent="logout()" class="dropdown-item"
+                        >Cerrar sesión</a
+                    >
+                </div>
+            </div>
+        </div>
+        <!-- END header-nav -->
     </div>
+    <!-- END #header -->
 </template>
 
 <style scoped>

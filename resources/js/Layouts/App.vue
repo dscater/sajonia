@@ -34,37 +34,9 @@ onMounted(() => {
 	<div class="app app-header-fixed app-sidebar-fixed" :class="{
 		'app-sidebar-minified':appOption.appSidebarMinified
 	}">
-		<!-- BEGIN #header -->
-		<div id="header" class="app-header" data-bs-theme="dark">
-			<!-- BEGIN navbar-header -->
-			<div class="navbar-header">
-				<a href="index.html" class="navbar-brand"><i class="fab fa-facebook-square fa-lg"></i> <b>Color</b> Admin <small>social</small></a>
-				<button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-			</div>
-			<!-- END navbar-header -->
-			<!-- BEGIN header-nav -->
-			<div class="navbar-nav">
-				<NavBar></NavBar>
-			</div>
-			<!-- END header-nav -->
-		</div>
-		<!-- END #header -->
+		<NavBar></NavBar>
 	
-		<!-- BEGIN #sidebar -->
-		<div id="sidebar" class="app-sidebar">
-			<!-- BEGIN scrollbar -->
-			<div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
-				<SideBar></SideBar>
-			</div>
-			<!-- END scrollbar -->
-		</div>
-		<div class="app-sidebar-bg"></div>
-		<div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
-		<!-- END #sidebar -->
+		<SideBar></SideBar>
 		
 		<!-- BEGIN #content -->
 		<div id="content" class="app-content">

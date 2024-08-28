@@ -2,7 +2,7 @@
     --principal: #1867c0;
     --principal_hover: #40a5f7;
     --principal_transparent: #2a99f3c2;
-    --secundario: #e96f20;
+    --secundario: #f02a23;
     --secundario_hover: #fc9002;
     --fondo_app: #e8e9eb;
     --correcto: #d2e7c9;
@@ -19,6 +19,14 @@ html {
 .pace .pace-activity,
 .pace .pace-progress {
     top: 0px;
+}
+
+#sidebar{
+    background-color: white;
+}
+
+.app-sidebar .menu .menu-item.active>.menu-link{
+    background-color: var(--secundario);
 }
 
 /* #modal-dialog-form .modal-dialog .modal-content{
