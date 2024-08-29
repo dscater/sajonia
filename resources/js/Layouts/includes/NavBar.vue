@@ -3,6 +3,7 @@
 import { usePage, Link, router } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import { useConfiguracion } from "@/composables/configuracion/useConfiguracion";
+import { useAppOptionStore } from "@/stores/app-option";
 import { useMenu } from "@/composables/useMenu";
 import { useUser } from "@/composables/useUser";
 const { props } = usePage();
@@ -18,6 +19,7 @@ const user = {
 };
 
 const { oConfiguracion } = useConfiguracion();
+const appOption = useAppOptionStore();
 
 const logout = () => {
     router.post(route("logout"));
@@ -27,6 +29,10 @@ const open_perfil = ref(false);
 const open_menu_usuario = () => {
     open_perfil.value = !open_perfil.value;
 };
+
+const open_menu_mobile = ()=>{
+    appOption.appSidebarMobileToggled = !appOption.appSidebarMobileToggled;
+}
 
 onMounted(() => {
     url_assets = props.url_assets;
@@ -44,7 +50,7 @@ onMounted(() => {
             <button
                 type="button"
                 class="navbar-mobile-toggler"
-                data-toggle="app-sidebar-mobile"
+                @click="open_menu_mobile()"
             >
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>

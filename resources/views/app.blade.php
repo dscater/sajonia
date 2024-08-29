@@ -46,7 +46,6 @@
         <script src="{{ asset('assets/template/assets/plugins/gritter/js/jquery.gritter.js')}}"></script>
         <script src="{{ asset('assets/template/assets/js/demo/ui-modal-notification.demo.js')}}"></script>
         <script src="{{ asset('assets/template/assets/plugins/@highlightjs/cdn-assets/highlight.min.js')}}"></script>
-        <script src="{{ asset('assets/template/assets/js/demo/render.highlight.js')}}"></script>
         <!-- ================== END page-js ================== -->
     </body>
 </html>

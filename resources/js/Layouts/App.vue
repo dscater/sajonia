@@ -32,7 +32,8 @@ onMounted(() => {
 	<!-- END #loader -->
 	<!-- BEGIN #app -->
 	<div class="app app-header-fixed app-sidebar-fixed" :class="{
-		'app-sidebar-minified':appOption.appSidebarMinified
+		'app-sidebar-minified':appOption.appSidebarMinified,
+		'app-sidebar-mobile-toggled':appOption.appSidebarMobileToggled,
 	}">
 		<NavBar></NavBar>
 	
