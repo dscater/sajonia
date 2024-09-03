@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        "usuario",
         "nombre",
         "paterno",
         "materno",
@@ -31,8 +32,9 @@ class User extends Authenticatable
         "tipo",
         "foto",
         "fecha_registro",
+        "acceso"
     ];
-    protected $appends = ["permisos", "url_foto", "full_name", "fecha_registro_t"];
+    protected $appends = ["permisos", "url_foto", "full_name", "full_ci", "fecha_registro_t"];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -76,7 +78,7 @@ class User extends Authenticatable
     {
         return $this->nombre . ' ' . $this->paterno . ($this->materno != NULL && $this->materno != '' ? ' ' . $this->materno : '');
     }
-    
+
     public function getUrlFotoAttribute()
     {
         if ($this->foto) {
@@ -89,5 +91,14 @@ class User extends Authenticatable
     public function datos_personal()
     {
         return $this->hasOne(DatosPersonal::class, 'user_id');
+    }
+
+    // FUNCIONES
+    public static function getNombreUsuario($nom, $apep)
+    {
+        //determinando el nombre de usuario inicial del 1er_nombre+apep+tipoUser
+        $nombre_user = substr(mb_strtoupper($nom), 0, 1); //inicial 1er_nombre
+        $nombre_user .= mb_strtoupper($apep);
+        return $nombre_user;
     }
 }

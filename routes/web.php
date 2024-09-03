@@ -47,6 +47,7 @@ Route::middleware('auth')->prefix("admin")->group(function () {
 
     // USUARIOS
     Route::put("usuarios/password/{user}", [UsuarioController::class, 'actualizaPassword'])->name("usuarios.password");
+    Route::get("usuarios/api", [UsuarioController::class, 'api'])->name("usuarios.api");
     Route::get("usuarios/paginado", [UsuarioController::class, 'paginado'])->name("usuarios.paginado");
     Route::get("usuarios/listado", [UsuarioController::class, 'listado'])->name("usuarios.listado");
     Route::get("usuarios/listado/byTipo", [UsuarioController::class, 'byTipo'])->name("usuarios.byTipo");

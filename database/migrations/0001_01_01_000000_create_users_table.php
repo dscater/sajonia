@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('tipo', 255);
             $table->string('foto', 255)->nullable();
             $table->date("fecha_registro");
+            $table->integer("acceso");
             $table->timestamps();
         });
     }

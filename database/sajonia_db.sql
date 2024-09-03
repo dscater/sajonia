@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-08-2024 a las 15:19:21
+-- Tiempo de generación: 03-09-2024 a las 19:14:30
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.22
 
@@ -83,6 +83,20 @@ CREATE TABLE `historial_accions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `historial_accions`
+--
+
+INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `datos_original`, `datos_nuevo`, `modulo`, `fecha`, `hora`, `created_at`, `updated_at`) VALUES
+(1, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 1<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 16:29:41<br/>', NULL, 'USUARIOS', '2024-09-03', '16:29:41', '2024-09-03 20:29:41', '2024-09-03 20:29:41'),
+(2, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', 'id: 3<br/>usuario: EPAREDES<br/>nombre: EDUARDO<br/>paterno: PAREDES<br/>materno: <br/>ci: 2222<br/>ci_exp: LP<br/>dir: LOS PEDREGALES<br/>email: <br/>fono: 66666666<br/>password: $2y$12$szDkh9OhxlYZlsMEIzhktuML1W0QBdiu4ADBRIX5PIs30L6Z2zhHa<br/>tipo: AGENTE INMOBILIARIO<br/>foto: <br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 17:29:23<br/>updated_at: 2024-09-03 17:29:23<br/>', NULL, 'USUARIOS', '2024-09-03', '17:29:23', '2024-09-03 21:29:23', '2024-09-03 21:29:23'),
+(3, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', 'id: 4<br/>usuario: MPAREDES<br/>nombre: MARIA<br/>paterno: PAREDES<br/>materno: <br/>ci: 3333<br/>ci_exp: LP<br/>dir: ZONA LOS PEDREGALES<br/>email: MARIA@GMAIL.COM<br/>fono: 78787878<br/>password: $2y$12$vsNccOFOJPrFo7ZcgyJtpuRt4/rpj27f3GFu6qYIECyulco2KlFg.<br/>tipo: AGENTE INMOBILIARIO<br/>foto: 1725386133_MPAREDES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 1<br/>created_at: 2024-09-03 17:55:33<br/>updated_at: 2024-09-03 17:55:33<br/>', NULL, 'USUARIOS', '2024-09-03', '17:55:33', '2024-09-03 21:55:33', '2024-09-03 21:55:33'),
+(4, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 1<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 16:29:41<br/>', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 1<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 16:29:41<br/>', 'USUARIOS', '2024-09-03', '18:53:04', '2024-09-03 22:53:04', '2024-09-03 22:53:04'),
+(5, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 3<br/>usuario: EPAREDES<br/>nombre: EDUARDO<br/>paterno: PAREDES<br/>materno: <br/>ci: 2222<br/>ci_exp: LP<br/>dir: LOS PEDREGALES<br/>email: <br/>fono: 66666666<br/>password: $2y$12$szDkh9OhxlYZlsMEIzhktuML1W0QBdiu4ADBRIX5PIs30L6Z2zhHa<br/>tipo: AGENTE INMOBILIARIO<br/>foto: <br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 17:29:23<br/>updated_at: 2024-09-03 17:29:23<br/>', 'id: 3<br/>usuario: EPAREDES<br/>nombre: EDUARDO<br/>paterno: PAREDES<br/>materno: <br/>ci: 2222<br/>ci_exp: LP<br/>dir: LOS PEDREGALES<br/>email: <br/>fono: 66666666<br/>password: $2y$12$szDkh9OhxlYZlsMEIzhktuML1W0QBdiu4ADBRIX5PIs30L6Z2zhHa<br/>tipo: AGENTE INMOBILIARIO<br/>foto: <br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 17:29:23<br/>updated_at: 2024-09-03 17:29:23<br/>', 'USUARIOS', '2024-09-03', '18:59:01', '2024-09-03 22:59:01', '2024-09-03 22:59:01'),
+(6, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 1<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 16:29:41<br/>', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 19:13:10<br/>', 'USUARIOS', '2024-09-03', '19:13:10', '2024-09-03 23:13:10', '2024-09-03 23:13:10'),
+(7, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: SUPERVISOR<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 19:13:10<br/>', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: AGENTE INMOBILIARIO<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 19:13:15<br/>', 'USUARIOS', '2024-09-03', '19:13:15', '2024-09-03 23:13:15', '2024-09-03 23:13:15'),
+(8, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: AGENTE INMOBILIARIO<br/>foto: 1725380981_JPERES.jpg<br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 19:13:15<br/>', 'id: 2<br/>usuario: JPERES<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>dir: ZONA LOS OLIVOS<br/>email: JUAN@GMAIL.COM<br/>fono: 77777777<br/>password: $2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u<br/>tipo: AGENTE INMOBILIARIO<br/>foto: 1725390831_JPERES.png<br/>fecha_registro: 2024-09-03<br/>acceso: 0<br/>created_at: 2024-09-03 16:29:41<br/>updated_at: 2024-09-03 19:13:51<br/>', 'USUARIOS', '2024-09-03', '19:13:51', '2024-09-03 23:13:51', '2024-09-03 23:13:51');
 
 -- --------------------------------------------------------
 
@@ -259,6 +273,7 @@ CREATE TABLE `users` (
   `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` date NOT NULL,
+  `acceso` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -267,8 +282,11 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `dir`, `email`, `fono`, `password`, `tipo`, `foto`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin', 'admin', NULL, '0', '', '', 'admin@admin.com', '', '$2y$12$65d4fgZsvBV5Lc/AxNKh4eoUdbGyaczQ4sSco20feSQANshNLuxSC', 'ADMINISTRADOR', NULL, '2024-08-26', NULL, NULL);
+INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `dir`, `email`, `fono`, `password`, `tipo`, `foto`, `fecha_registro`, `acceso`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin', 'admin', NULL, '0', '', '', 'admin@admin.com', '', '$2y$12$65d4fgZsvBV5Lc/AxNKh4eoUdbGyaczQ4sSco20feSQANshNLuxSC', 'ADMINISTRADOR', NULL, '2024-08-26', 1, NULL, NULL),
+(2, 'JPERES', 'JUAN', 'PERES', 'MAMANI', '1111', 'LP', 'ZONA LOS OLIVOS', 'JUAN@GMAIL.COM', '77777777', '$2y$12$PXuj3k43zq1kLH4/pIA2AeeYxsbUZd1J.kBBdhzjklBczxX8kwt8u', 'AGENTE INMOBILIARIO', '1725390831_JPERES.png', '2024-09-03', 0, '2024-09-03 20:29:41', '2024-09-03 23:13:51'),
+(3, 'EPAREDES', 'EDUARDO', 'PAREDES', '', '2222', 'LP', 'LOS PEDREGALES', '', '66666666', '$2y$12$szDkh9OhxlYZlsMEIzhktuML1W0QBdiu4ADBRIX5PIs30L6Z2zhHa', 'AGENTE INMOBILIARIO', NULL, '2024-09-03', 0, '2024-09-03 21:29:23', '2024-09-03 21:29:23'),
+(4, 'MPAREDES', 'MARIA', 'PAREDES', '', '3333', 'LP', 'ZONA LOS PEDREGALES', 'MARIA@GMAIL.COM', '78787878', '$2y$12$vsNccOFOJPrFo7ZcgyJtpuRt4/rpj27f3GFu6qYIECyulco2KlFg.', 'AGENTE INMOBILIARIO', '1725386133_MPAREDES.jpg', '2024-09-03', 1, '2024-09-03 21:55:33', '2024-09-03 21:55:33');
 
 -- --------------------------------------------------------
 
@@ -442,7 +460,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `lotes`
@@ -496,7 +514,7 @@ ALTER TABLE `urbanizacions`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `venta_lotes`

@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\HistorialAccion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use PgSql\Lob;
 
 class UsuarioController extends Controller
 {
@@ -45,7 +49,7 @@ class UsuarioController extends Controller
 
     public function listado()
     {
-        $usuarios = User::where("id", "!=", 1)->whereIn("tipo", ["ADMINISTRADOR", "OPERADOR"])->get();
+        $usuarios = User::where("id", "!=", 1)->where("tipo", "!=", "CLIENTE")->get();
         return response()->JSON([
             "usuarios" => $usuarios
         ]);
@@ -69,10 +73,18 @@ class UsuarioController extends Controller
         ]);
     }
 
+    public function api(Request $request)
+    {
+        Log::debug($request);
+        $usuarios = User::where("id", "!=", 1)->where("tipo", "!=", "CLIENTE");
+        $usuarios = $usuarios->paginate(10);
+        return response()->JSON($usuarios);
+    }
+
     public function paginado(Request $request)
     {
         $search = $request->search;
-        $usuarios = User::where("id", "!=", 1)->whereIn("tipo", ["ADMINISTRADOR", "OPERADOR"]);
+        $usuarios = User::where("id", "!=", 1)->where("tipo", "!=", "CLIENTE");
 
         if (trim($search) != "") {
             $usuarios->where("nombre", "LIKE", "%$search%");
@@ -90,27 +102,26 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci';
-        $this->validacion['email'] = 'required|unique:users,ci';
         if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
+            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:4096';
         }
         $request->validate($this->validacion, $this->mensajes);
 
-        // $cont = 0;
-        // do {
-        //     $nombre_usuario = User::getNombreUsuario($request->nombre, $request->paterno);
-        //     if ($cont > 0) {
-        //         $nombre_usuario = $nombre_usuario . $cont;
-        //     }
-        //     $request['usuario'] = $nombre_usuario;
-        //     $cont++;
-        // } while (User::where('usuario', $nombre_usuario)->get()->first());
-
-        $request['usuario'] = $request->email;
-        $request['password'] = 'NoNulo';
-        $request['fecha_registro'] = date('Y-m-d');
         DB::beginTransaction();
         try {
+            $cont = 0;
+            do {
+                $nombre_usuario = User::getNombreUsuario($request->nombre, $request->paterno);
+                if ($cont > 0) {
+                    $nombre_usuario = $nombre_usuario . $cont;
+                }
+                $request['usuario'] = $nombre_usuario;
+                $cont++;
+            } while (User::where('usuario', $nombre_usuario)->get()->first());
+
+            $request['password'] = 'NoNulo';
+            $request['fecha_registro'] = date('Y-m-d');
+
             // crear el Usuario
             $nuevo_usuario = User::create(array_map('mb_strtoupper', $request->except('foto')));
             $nuevo_usuario->password = Hash::make($request->ci);
@@ -144,7 +155,10 @@ class UsuarioController extends Controller
         }
     }
 
-    public function show(User $user) {}
+    public function show(User $user)
+    {
+        return response()->JSON($user);
+    }
 
     public function actualizaAcceso(User $user, Request $request)
     {
@@ -159,9 +173,8 @@ class UsuarioController extends Controller
     public function update(User $user, Request $request)
     {
         $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci,' . $user->id;
-        $this->validacion['email'] = 'required|unique:users,ci,' . $user->id;
         if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
+            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:4096';
         }
         $request->validate($this->validacion, $this->mensajes);
         DB::beginTransaction();
@@ -191,7 +204,6 @@ class UsuarioController extends Controller
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
-
 
             DB::commit();
             return redirect()->route("usuarios.index")->with("bien", "Registro actualizado");

@@ -20,7 +20,7 @@ import { Head, Link } from "@inertiajs/vue3";
 import { useUsuarios } from "@/composables/usuarios/useUsuarios";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted } from "vue";
-import PanelToolbar from "@/Components/PanelToolbar.vue"
+import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
 import FormPassword from "./FormPassword.vue";
@@ -34,25 +34,76 @@ onMounted(() => {
 
 const { getUsuarios, setUsuario, limpiarUsuario, deleteUsuario } =
     useUsuarios();
-const responseUsuarios = ref([]);
-const listUsuarios = ref([]);
-const itemsPerPage = ref(5);
 
-const search = ref("");
-const options = ref({
-    page: 1,
-    itemsPerPage: itemsPerPage,
-    sortBy: "",
-    sortOrder: "desc",
-    search: "",
-});
-
+const columns = [
+    {
+        title: "",
+        data: "id",
+    },
+    {
+        title: "",
+        data: "url_foto",
+        render: function (data, type, row) {
+            return `<img src="${data}" class="rounded h-30px my-n1 mx-n1"/>`;
+        },
+    },
+    {
+        title: "USUARIO",
+        data: "usuario",
+    },
+    {
+        title: "NOMBRE COMPLETO",
+        data: "full_name",
+    },
+    {
+        title: "C.I.",
+        data: "full_ci",
+    },
+    {
+        title: "DIRECCIÓN",
+        data: "dir",
+    },
+    {
+        title: "TELÉFONO",
+        data: "fono",
+    },
+    {
+        title: "TIPO",
+        data: "tipo",
+    },
+    {
+        title: "ACCESO",
+        data: "acceso",
+        render: function (data, type, row) {
+            if (data == 1) {
+                return `<span class="badge bg-success">HABILITADO</span>`;
+            } else {
+                return `<span class="badge bg-danger">DESHABILITADO</span>`;
+            }
+        },
+    },
+    {
+        title: "Acciones",
+        data: null,
+        render: function (data, type, row) {
+            return `
+                <button class="mx-0 rounded-0 btn btn-info password" data-id="${
+                    row.id
+                }"><i class="fa fa-key"></i></button>
+                <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
+                    row.id
+                }"><i class="fa fa-edit"></i></button>
+                <button class="mx-0 rounded-0 btn btn-danger eliminar" data-id="${
+                    row.id
+                }" data-url="${route(
+                "usuarios.destroy",
+                row.id
+            )}"><i class="fa fa-trash"></i></button>
+            `;
+        },
+    },
+];
 const loading = ref(true);
-const totalItems = ref(0);
-let setTimeOutLoadData = null;
-const cargarUsuarios = async () => {
-    listUsuarios.value = await getUsuarios();
-};
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
 const accion_dialog_pass = ref(0);
@@ -63,11 +114,25 @@ const agregarRegistro = () => {
     accion_dialog.value = 0;
     open_dialog.value = true;
 };
-const editarUsuario = (item) => {
-    setUsuario(item);
-    accion_dialog.value = 1;
-    open_dialog.value = true;
+
+const accionesRow = () => {
+    // editar
+    $("#data-table-responsive").on("click", "button.editar", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        axios.get(route("usuarios.show", id)).then((response) => {
+            setUsuario(response.data);
+            accion_dialog.value = 1;
+            open_dialog.value = true;
+        });
+    });
+    // eliminar
+    $("#data-table-responsive").on("click", "button.eliminar", function (e) {
+        e.preventDefault();
+        console.log($(this).attr("data-id"));
+    });
 };
+
 const updatePassword = (item) => {
     setUsuario(item);
     accion_dialog_pass.value = 1;
@@ -93,9 +158,18 @@ const eliminarUsuario = (item) => {
     });
 };
 
+var datatable = null;
+const updateDatatable = () => {
+    datatable.ajax.reload();
+};
+
 onMounted(async () => {
-    await cargarUsuarios();
-    initDataTable();
+    datatable = initDataTable(
+        "#data-table-responsive",
+        columns,
+        route("usuarios.api")
+    );
+    accionesRow();
 });
 </script>
 <template>
@@ -118,12 +192,18 @@ onMounted(async () => {
                 <!-- BEGIN panel-heading -->
                 <div class="panel-heading">
                     <h4 class="panel-title btn-nuevo">
-                        <button type="button" class="btn btn-primary"
-                        @click="agregarRegistro">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="agregarRegistro"
+                        >
                             <i class="fa fa-plus"></i> Nuevo
                         </button>
                     </h4>
-                    <panel-toolbar />
+                    <panel-toolbar
+                        :mostrar_loading="loading"
+                        @loading="updateDatatable"
+                    />
                 </div>
                 <!-- END panel-heading -->
                 <!-- BEGIN panel-body -->
@@ -144,58 +224,10 @@ onMounted(async () => {
                                 <th class="text-nowrap">Teléfono</th>
                                 <th class="text-nowrap">Tipo</th>
                                 <th class="text-nowrap">Acceso</th>
-                                <th class="text-nowrap">Acción</th>
+                                <th class="text-nowrap" width="5%">Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="odd gradeX" v-for="item in listUsuarios">
-                                <td width="1%" class="fw-bold">
-                                    {{ this.id }}
-                                </td>
-                                <td width="1%">
-                                    <img
-                                        :src="item.url_foto"
-                                        class="rounded h-30px my-n1 mx-n1"
-                                    />
-                                </td>
-                                <td>{{ this.usuario }}</td>
-                                <td>
-                                    {{ this.nombre }} {{ this.paterno }}
-                                    {{ this.materno }}
-                                </td>
-                                <td>{{ this.ci }} {{ this.ci_exp }}</td>
-                                <td>{{ this.dir }}</td>
-                                <td>{{ this.fono }}</td>
-                                <td>{{ this.tipo }}</td>
-                                <td></td>
-                                <td class="btns-opciones">
-                                    <a href="#" class="password evaluar"
-                                        ><i
-                                            class="fa fa-key"
-                                            data-toggle="tooltip"
-                                            data-placement="left"
-                                            title="Cambiar Contraseña"
-                                        ></i
-                                    ></a>
-                                    <a href="#" class="modificar"
-                                        ><i
-                                            class="fa fa-edit"
-                                            data-toggle="tooltip"
-                                            data-placement="left"
-                                            title="Modificar"
-                                        ></i
-                                    ></a>
-                                    <a href="#" class="eliminar"
-                                        ><i
-                                            class="fa fa-trash"
-                                            data-toggle="tooltip"
-                                            data-placement="left"
-                                            title="Eliminar"
-                                        ></i
-                                    ></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
                 <!-- END panel-body -->
@@ -204,11 +236,10 @@ onMounted(async () => {
         </div>
     </div>
 
-    
     <Formulario
         :open_dialog="open_dialog"
         :accion_dialog="accion_dialog"
-        @envio-formulario="cargarUsuarios"
+        @envio-formulario="updateDatatable"
         @cerrar-dialog="open_dialog = false"
     ></Formulario>
     <!-- <FormPassword

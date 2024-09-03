@@ -41,11 +41,19 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('usuario', 'password'), $this->boolean('remember'))) {
+        $data = $this->only("usuario", "password");
+
+        if (! Auth::attempt($data, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'usuario' => trans('auth.failed'),
+            ]);
+        }
+        if (Auth::user()->acceso == 0) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'usuario' => "Acceso denegado",
             ]);
         }
 
@@ -80,6 +88,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('usuario')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('usuario')) . '|' . $this->ip());
     }
 }
