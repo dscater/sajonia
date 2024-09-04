@@ -164,7 +164,7 @@ onMounted(() => {
                 <div class="modal-body">
                     <form @submit.prevent="enviarFormulario()">
                         <div class="row">
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4">
                                 <label>Nombre(s)*</label>
                                 <input
                                     type="text"
@@ -183,7 +183,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Ap. Paterno*</label>
                                 <input
                                     type="text"
@@ -203,7 +203,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Ap. Materno</label>
                                 <input
                                     type="text"
@@ -223,7 +223,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Cédula de Identidad*</label>
                                 <input
                                     type="number"
@@ -243,7 +243,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Extensión C.I.*</label>
                                 <select
                                     class="form-select"
@@ -270,7 +270,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Dirección*</label>
                                 <input
                                     type="text"
@@ -290,7 +290,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Email</label>
                                 <input
                                     type="text"
@@ -310,7 +310,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Teléfono/Celular*</label>
                                 <input
                                     type="text"
@@ -330,7 +330,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Tipo de Usuario*</label>
                                 <select
                                     class="form-select"
@@ -357,7 +357,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label>Foto</label>
                                 <input
                                     type="file"
@@ -378,7 +378,7 @@ onMounted(() => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mt-2">
                                 <label for="flexSwitchCheckChecked"
                                     >Acceso*</label
                                 ><br />

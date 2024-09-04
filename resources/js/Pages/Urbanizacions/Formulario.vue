@@ -1,7 +1,7 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
-import { useUsuarios } from "@/composables/usuarios/useUsuarios";
-import { watch, ref, computed, defineEmits } from "vue";
+import { useUrbanizacions } from "@/composables/urbanizacions/useUrbanizacions";
+import { watch, ref, computed, defineEmits, onMounted, nextTick } from "vue";
 const props = defineProps({
     open_dialog: {
         type: Boolean,
@@ -13,18 +13,20 @@ const props = defineProps({
     },
 });
 
-const { oUsuario, limpiarUsuario } = useUsuarios();
+const { oUrbanizacion, limpiarUrbanizacion } = useUrbanizacions();
 const accion = ref(props.accion_dialog);
 const dialog = ref(props.open_dialog);
-let form = useForm({
-    password: "",
-});
+let form = useForm(oUrbanizacion.value);
 watch(
     () => props.open_dialog,
-    (newValue) => {
+    async (newValue) => {
         dialog.value = newValue;
-
-        document.getElementsByTagName("body")[0].classList.add("modal-open");
+        if (dialog.value) {
+            document
+                .getElementsByTagName("body")[0]
+                .classList.add("modal-open");
+            form = useForm(oUrbanizacion.value);
+        }
     }
 );
 watch(
@@ -36,16 +38,43 @@ watch(
 
 const { flash } = usePage().props;
 
+const listTipos = ["ADMINISTRADOR", "SUPERVISOR", "AGENTE INMOBILIARIO"];
+const listExpedido = [
+    { value: "LP", label: "La Paz" },
+    { value: "CB", label: "Cochabamba" },
+    { value: "SC", label: "Santa Cruz" },
+    { value: "CH", label: "Chuquisaca" },
+    { value: "OR", label: "Oruro" },
+    { value: "PT", label: "Potosi" },
+    { value: "TJ", label: "Tarija" },
+    { value: "PD", label: "Pando" },
+    { value: "BN", label: "Beni" },
+];
+
+const foto = ref(null);
+
+function cargaArchivo(e, key) {
+    form[key] = null;
+    form[key] = e.target.files[0];
+}
+
 const tituloDialog = computed(() => {
-    return accion.value == 0 ? `Agregar Usuario` : `Actualizar Contraseña`;
+    return accion.value == 0
+        ? `<i class="fa fa-plus"></i>Agregar Registro`
+        : `<i class="fa fa-edit"></i>Editar Registro`;
 });
 
 const enviarFormulario = () => {
-    let url = route("usuarios.password", oUsuario.value.id);
+    let url =
+        form["_method"] == "POST"
+            ? route("urbanizacions.store")
+            : route("urbanizacions.update", form.id);
 
-    form.put(url, {
+    form.post(url, {
         preserveScroll: true,
+        forceFormData: true,
         onSuccess: () => {
+            dialog.value = false;
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -53,11 +82,11 @@ const enviarFormulario = () => {
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: `Aceptar`,
             });
-            form.password = "";
-            limpiarUsuario();
+            limpiarUrbanizacion();
             emits("envio-formulario");
         },
         onError: (err) => {
+            console.log("ERROR");
             Swal.fire({
                 icon: "info",
                 title: "Error",
@@ -85,6 +114,7 @@ watch(dialog, (newVal) => {
 
 const cerrarDialog = () => {
     dialog.value = false;
+    document.getElementsByTagName("body")[0].classList.remove("modal-open");
 };
 </script>
 
@@ -99,7 +129,7 @@ const cerrarDialog = () => {
             display: dialog ? 'block' : 'none',
         }"
     >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h4 class="modal-title" v-html="tituloDialog"></h4>
@@ -112,24 +142,43 @@ const cerrarDialog = () => {
                 <div class="modal-body">
                     <form @submit.prevent="enviarFormulario()">
                         <div class="row">
-                            <div class="px-4 text-center col-md-12">
-                                <span class="text-body-2"
-                                    >{{ oUsuario.nombre }}
-                                    {{ oUsuario.paterno }}
-                                    {{ oUsuario.materno }}</span
-                                >
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Ingresa la nueva contraseña:</label>
+                            <div class="col-md-6 mt-2">
+                                <label>Nombre Urbanización*</label>
                                 <input
-                                    placeholder="Ingresa la nueva contraseña"
+                                    type="text"
                                     class="form-control"
-                                    autocomplete="false"
-                                    v-model="form.password"
-                                    type="password"
+                                    :class="{
+                                        'parsley-error': form.errors?.nombre,
+                                    }"
+                                    v-model="form.nombre"
                                 />
+                                <ul
+                                    v-if="form.errors?.nombre"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.nombre }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label>Descripción</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'parsley-error': form.errors?.descripcion,
+                                    }"
+                                    v-model="form.descripcion"
+                                />
+                                <ul
+                                    v-if="form.errors?.descripcion"
+                                    class="parsley-errors-list filled"
+                                >
+                                    <li class="parsley-required">
+                                        {{ form.errors?.descripcion }}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </form>

@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Usuarios",
+        title: "Urbanizacions",
         disabled: false,
         url: "",
         name_url: "",
@@ -17,13 +17,12 @@ const breadbrums = [
 <script setup>
 import { useApp } from "@/composables/useApp";
 import { Head, Link } from "@inertiajs/vue3";
-import { useUsuarios } from "@/composables/usuarios/useUsuarios";
+import { useUrbanizacions } from "@/composables/urbanizacions/useUrbanizacions";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
-import FormPassword from "./FormPassword.vue";
 // const { mobile, identificaDispositivo } = useMenu();
 const { setLoading } = useApp();
 onMounted(() => {
@@ -32,8 +31,12 @@ onMounted(() => {
     }, 300);
 });
 
-const { getUsuarios, setUsuario, limpiarUsuario, deleteUsuario } =
-    useUsuarios();
+const {
+    getUrbanizacions,
+    setUrbanizacion,
+    limpiarUrbanizacion,
+    deleteUrbanizacion,
+} = useUrbanizacions();
 
 const columns = [
     {
@@ -41,63 +44,30 @@ const columns = [
         data: "id",
     },
     {
-        title: "",
-        data: "url_foto",
-        render: function (data, type, row) {
-            return `<img src="${data}" class="rounded h-30px my-n1 mx-n1"/>`;
-        },
+        title: "NOMBRE",
+        data: "nombre",
     },
     {
-        title: "USUARIO",
-        data: "usuario",
+        title: "DESCRIPCIÓN",
+        data: "descripcion",
     },
     {
-        title: "NOMBRE COMPLETO",
-        data: "full_name",
-    },
-    {
-        title: "C.I.",
-        data: "full_ci",
-    },
-    {
-        title: "DIRECCIÓN",
-        data: "dir",
-    },
-    {
-        title: "TELÉFONO",
-        data: "fono",
-    },
-    {
-        title: "TIPO",
-        data: "tipo",
-    },
-    {
-        title: "ACCESO",
-        data: "acceso",
-        render: function (data, type, row) {
-            if (data == 1) {
-                return `<span class="badge bg-success">HABILITADO</span>`;
-            } else {
-                return `<span class="badge bg-danger">DESHABILITADO</span>`;
-            }
-        },
+        title: "FECHA DE REGISTRO",
+        data: "fecha_registro_t",
     },
     {
         title: "ACCIONES",
         data: null,
         render: function (data, type, row) {
             return `
-                <button class="mx-0 rounded-0 btn btn-info password" data-id="${
-                    row.id
-                }"><i class="fa fa-key"></i></button>
                 <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
                     row.id
                 }"><i class="fa fa-edit"></i></button>
                 <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}" 
-                 data-nombre="${row.full_name}" 
+                 data-nombre="${row.nombre}" 
                  data-url="${route(
-                     "usuarios.destroy",
+                     "urbanizacions.destroy",
                      row.id
                  )}"><i class="fa fa-trash"></i></button>
             `;
@@ -107,28 +77,26 @@ const columns = [
 const loading = ref(true);
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
-const accion_dialog_pass = ref(0);
-const open_dialog_pass = ref(false);
 
 const agregarRegistro = () => {
-    limpiarUsuario();
+    limpiarUrbanizacion();
     accion_dialog.value = 0;
     open_dialog.value = true;
 };
 
 const accionesRow = () => {
     // editar
-    $("#table-usuario").on("click", "button.editar", function (e) {
+    $("#table-urbanizacion").on("click", "button.editar", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        axios.get(route("usuarios.show", id)).then((response) => {
-            setUsuario(response.data);
+        axios.get(route("urbanizacions.show", id)).then((response) => {
+            setUrbanizacion(response.data);
             accion_dialog.value = 1;
             open_dialog.value = true;
         });
     });
     // eliminar
-    $("#table-usuario").on("click", "button.eliminar", function (e) {
+    $("#table-urbanizacion").on("click", "button.eliminar", function (e) {
         e.preventDefault();
         let nombre = $(this).attr("data-nombre");
         let id = $(this).attr("data-id");
@@ -143,21 +111,11 @@ const accionesRow = () => {
         }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                let respuesta = await deleteUsuario(id);
+                let respuesta = await deleteUrbanizacion(id);
                 if (respuesta && respuesta.sw) {
                     updateDatatable();
                 }
             }
-        });
-    });
-    // password
-    $("#table-usuario").on("click", "button.password", function (e) {
-        e.preventDefault();
-        let id = $(this).attr("data-id");
-        axios.get(route("usuarios.show", id)).then((response) => {
-            setUsuario(response.data);
-            accion_dialog_pass.value = 1;
-            open_dialog_pass.value = true;
         });
     });
 };
@@ -169,7 +127,11 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
-    datatable = initDataTable("#table-usuario", columns, route("usuarios.api"));
+    datatable = initDataTable(
+        "#table-urbanizacion",
+        columns,
+        route("urbanizacions.api")
+    );
     datatableInitialized.value = true;
     accionesRow();
 });
@@ -183,16 +145,16 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-    <Head title="Usuarios"></Head>
+    <Head title="Urbanizacions"></Head>
 
     <!-- BEGIN breadcrumb -->
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
-        <li class="breadcrumb-item active">Usuarios</li>
+        <li class="breadcrumb-item active">Urbanizaciones</li>
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">Usuarios</h1>
+    <h1 class="page-header">Urbanizaciones</h1>
     <!-- END page-header -->
 
     <div class="row">
@@ -219,12 +181,12 @@ onBeforeUnmount(() => {
                 <!-- BEGIN panel-body -->
                 <div class="panel-body">
                     <table
-                        id="table-usuario"
+                        id="table-urbanizacion"
                         width="100%"
                         class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
                     >
                         <thead>
-                    
+                       
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -241,10 +203,4 @@ onBeforeUnmount(() => {
         @envio-formulario="updateDatatable"
         @cerrar-dialog="open_dialog = false"
     ></Formulario>
-    <FormPassword
-        :open_dialog="open_dialog_pass"
-        :accion_dialog="accion_dialog_pass"
-        @envio-formulario="open_dialog_pass = false"
-        @cerrar-dialog="open_dialog_pass = false"
-    ></FormPassword>
 </template>

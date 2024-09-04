@@ -5,6 +5,7 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ParametrizacionController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UrbanizacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Foundation\Application;
@@ -58,8 +59,11 @@ Route::middleware('auth')->prefix("admin")->group(function () {
         ["index", "store"]
     );
 
-    // PARAMETRIZACION
-    Route::resource("parametrizacions", ParametrizacionController::class)->only(
+    // URBACIONAZION
+    Route::get("urbanizacions/api", [UrbanizacionController::class, 'api'])->name("urbanizacions.api");
+    Route::get("urbanizacions/paginado", [UrbanizacionController::class, 'paginado'])->name("urbanizacions.paginado");
+    Route::get("urbanizacions/listado", [UrbanizacionController::class, 'listado'])->name("urbanizacions.listado");
+    Route::resource("urbanizacions", UrbanizacionController::class)->only(
         ["index", "store", "update", "show", "destroy"]
     );
 

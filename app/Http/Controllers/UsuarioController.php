@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HistorialAccion;
 use App\Models\User;
+use App\Models\VentaLote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -255,13 +256,7 @@ class UsuarioController extends Controller
     {
         DB::beginTransaction();
         try {
-            $usos = Obra::where("gerente_regional_id", $user->id)->get();
-            if (count($usos) > 0) {
-                throw ValidationException::withMessages([
-                    'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
-                ]);
-            }
-            $usos = Obra::where("encargado_obra_id", $user->id)->get();
+            $usos = VentaLote::where("user_id", $user->id)->get();
             if (count($usos) > 0) {
                 throw ValidationException::withMessages([
                     'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",

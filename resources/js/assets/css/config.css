@@ -16,12 +16,25 @@ html {
     overflow-y: overlay;
 }
 
+.text-right {
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+.font-weight-bold{
+    font-weight: bold;
+}
+
 .pace .pace-activity,
 .pace .pace-progress {
     top: 0px;
 }
 
-#sidebar{
+#sidebar {
     background-color: white;
     overflow: auto;
     scrollbar-width: thin; /* Firefox */
@@ -46,7 +59,7 @@ html {
     background-color: #e0e0e0; /* Color de fondo de la barra */
 }
 
-.app-sidebar .menu .menu-item.active>.menu-link{
+.app-sidebar .menu .menu-item.active > .menu-link {
     background-color: var(--secundario);
 }
 
@@ -54,7 +67,7 @@ html {
     width: calc(100vw - 90px);
 } */
 
-.modal-open .modal{
+.modal-open .modal {
     background-color: rgba(0, 0, 0, 0.582);
 }
 

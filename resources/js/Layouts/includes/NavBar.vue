@@ -76,7 +76,7 @@ onMounted(() => {
                     class="dropdown-menu dropdown-menu-end me-1"
                     :class="[open_perfil ? 'show' : '']"
                 >
-                    <a href="#" class="dropdown-item">Perfil</a>
+                    <Link :href="route('profile.edit')" class="dropdown-item">Perfil</Link>
                     <div class="dropdown-divider"></div>
                     <a href="#" @click.prevent="logout()" class="dropdown-item"
                         >Cerrar sesión</a

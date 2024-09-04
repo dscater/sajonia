@@ -4,7 +4,10 @@ export function initDataTable(
     ajaxUrl = null,
     additionalOptions = {}
 ) {
-    if ($(selector).length !== 0) {
+    const element = $(selector);
+
+    // Verificar si el elemento ya está inicializado como DataTable
+    if (element.length !== 0 && !$.fn.dataTable.isDataTable(element)) {
         const options = {
             responsive: true,
             columns: columns,
@@ -50,6 +53,8 @@ export function initDataTable(
 
         const finalOptions = { ...options, ...additionalOptions };
 
-        return $(selector).DataTable(finalOptions);
+        return element.DataTable(finalOptions);
     }
+    // Si ya está inicializado, podrías devolver el DataTable existente o null
+    return element.DataTable();
 }
