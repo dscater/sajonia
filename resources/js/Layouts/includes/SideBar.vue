@@ -588,25 +588,27 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
+                    v-if="user_logeado.permisos.includes('lotes.index')"
                     class="menu-item"
                     :class="[route_current == 'lotes.index' ? 'active' : '']"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link :href="route('lotes.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-list"></i>
                         </div>
-                        <div class="menu-text">Lote</div>
+                        <div class="menu-text">Lotes</div>
                     </Link>
                 </div>
                 <div
+                    v-if="user_logeado.permisos.includes('manzanos.index')"
                     class="menu-item"
                     :class="[route_current == 'manzanos.index' ? 'active' : '']"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link :href="route('manzanos.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-list"></i>
                         </div>
-                        <div class="menu-text">Manzano</div>
+                        <div class="menu-text">Manzanos</div>
                     </Link>
                 </div>
                 <div
@@ -616,7 +618,10 @@ const logout = () => {
                         route_current == 'urbanizacions.index' ? 'active' : '',
                     ]"
                 >
-                    <Link :href="route('urbanizacions.index')" class="menu-link">
+                    <Link
+                        :href="route('urbanizacions.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-list-alt"></i>
                         </div>

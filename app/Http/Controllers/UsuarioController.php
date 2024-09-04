@@ -79,7 +79,7 @@ class UsuarioController extends Controller
         Log::debug($request);
         $usuarios = User::where("id", "!=", 1)->where("tipo", "!=", "CLIENTE");
         $usuarios = $usuarios->paginate(10);
-        return response()->JSON($usuarios);
+        return response()->JSON(["data" => $usuarios]);
     }
 
     public function paginado(Request $request)

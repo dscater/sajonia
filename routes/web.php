@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\LoteController;
+use App\Http\Controllers\ManzanoController;
 use App\Http\Controllers\ParametrizacionController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
@@ -64,6 +66,23 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::get("urbanizacions/paginado", [UrbanizacionController::class, 'paginado'])->name("urbanizacions.paginado");
     Route::get("urbanizacions/listado", [UrbanizacionController::class, 'listado'])->name("urbanizacions.listado");
     Route::resource("urbanizacions", UrbanizacionController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // MANZANOS
+    Route::get("manzanos/api", [ManzanoController::class, 'api'])->name("manzanos.api");
+    Route::get("manzanos/paginado", [ManzanoController::class, 'paginado'])->name("manzanos.paginado");
+    Route::get("manzanos/listadoByUrbanizacion", [ManzanoController::class, 'listadoByUrbanizacion'])->name("manzanos.listadoByUrbanizacion");
+    Route::get("manzanos/listado", [ManzanoController::class, 'listado'])->name("manzanos.listado");
+    Route::resource("manzanos", ManzanoController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // LOTES
+    Route::get("lotes/api", [LoteController::class, 'api'])->name("lotes.api");
+    Route::get("lotes/paginado", [LoteController::class, 'paginado'])->name("lotes.paginado");
+    Route::get("lotes/listado", [LoteController::class, 'listado'])->name("lotes.listado");
+    Route::resource("lotes", LoteController::class)->only(
         ["index", "store", "update", "show", "destroy"]
     );
 

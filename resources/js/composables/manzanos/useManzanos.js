@@ -2,21 +2,22 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
-const oUrbanizacion = ref({
+const oManzano = ref({
     id: 0,
+    urbanizacion_id: null,
     nombre: "",
     descripcion: "",
     _method: "POST",
 });
 
-export const useUrbanizacions = () => {
+export const useManzanos = () => {
     const { flash } = usePage().props;
-    const getUrbanizacions = async () => {
+    const getManzanos = async () => {
         try {
-            const response = await axios.get(route("urbanizacions.listado"), {
+            const response = await axios.get(route("manzanos.listado"), {
                 headers: { Accept: "application/json" },
             });
-            return response.data.urbanizacions;
+            return response.data.manzanos;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -35,15 +36,12 @@ export const useUrbanizacions = () => {
         }
     };
 
-    const getUrbanizacionsApi = async (data) => {
+    const getManzanosApi = async (data) => {
         try {
-            const response = await axios.get(
-                route("urbanizacions.paginado", data),
-                {
-                    headers: { Accept: "application/json" },
-                }
-            );
-            return response.data.urbanizacions;
+            const response = await axios.get(route("manzanos.paginado", data), {
+                headers: { Accept: "application/json" },
+            });
+            return response.data.manzanos;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -61,14 +59,11 @@ export const useUrbanizacions = () => {
             throw err; // Puedes manejar el error según tus necesidades
         }
     };
-    const saveUrbanizacion = async (data) => {
+    const saveManzano = async (data) => {
         try {
-            const response = await axios.post(
-                route("urbanizacions.store", data),
-                {
-                    headers: { Accept: "application/json" },
-                }
-            );
+            const response = await axios.post(route("manzanos.store", data), {
+                headers: { Accept: "application/json" },
+            });
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -95,14 +90,11 @@ export const useUrbanizacions = () => {
         }
     };
 
-    const deleteUrbanizacion = async (id) => {
+    const deleteManzano = async (id) => {
         try {
-            const response = await axios.delete(
-                route("urbanizacions.destroy", id),
-                {
-                    headers: { Accept: "application/json" },
-                }
-            );
+            const response = await axios.delete(route("manzanos.destroy", id), {
+                headers: { Accept: "application/json" },
+            });
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -129,34 +121,35 @@ export const useUrbanizacions = () => {
         }
     };
 
-    const setUrbanizacion = (item = null) => {
+    const setManzano = (item = null) => {
         if (item) {
-            oUrbanizacion.value.id = item.id;
-            oUrbanizacion.value.nombre = item.nombre;
-            oUrbanizacion.value.descripcion = item.descripcion;
-            oUrbanizacion.value.acceso = item.acceso + "";
-            oUrbanizacion.value._method = "PUT";
-            return oUrbanizacion;
+            oManzano.value.id = item.id;
+            oManzano.value.urbanizacion_id = item.urbanizacion_id;
+            oManzano.value.nombre = item.nombre;
+            oManzano.value.descripcion = item.descripcion;
+            oManzano.value._method = "PUT";
+            return oManzano;
         }
         return false;
     };
 
-    const limpiarUrbanizacion = () => {
-        oUrbanizacion.value.id = 0;
-        oUrbanizacion.value.nombre = "";
-        oUrbanizacion.value.descripcion = "";
-        oUrbanizacion.value._method = "POST";
+    const limpiarManzano = () => {
+        oManzano.value.id = 0;
+        oManzano.value.urbanizacion_id = null;
+        oManzano.value.nombre = "";
+        oManzano.value.descripcion = "";
+        oManzano.value._method = "POST";
     };
 
     onMounted(() => {});
 
     return {
-        oUrbanizacion,
-        getUrbanizacions,
-        getUrbanizacionsApi,
-        saveUrbanizacion,
-        deleteUrbanizacion,
-        setUrbanizacion,
-        limpiarUrbanizacion,
+        oManzano,
+        getManzanos,
+        getManzanosApi,
+        saveManzano,
+        deleteManzano,
+        setManzano,
+        limpiarManzano,
     };
 };

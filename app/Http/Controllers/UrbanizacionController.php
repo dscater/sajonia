@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HistorialAccion;
 use App\Models\Lote;
+use App\Models\Manzano;
 use App\Models\Urbanizacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,8 +41,10 @@ class UrbanizacionController extends Controller
     {
         // Log::debug($request);
         $urbanizacions = Urbanizacion::select("urbanizacions.*");
-        $urbanizacions = $urbanizacions->paginate(10);
-        return response()->JSON($urbanizacions);
+        $urbanizacions = $urbanizacions->get();
+        return response()->JSON([
+            "data" => $urbanizacions
+        ]);
     }
 
     public function paginado(Request $request)
@@ -127,6 +130,12 @@ class UrbanizacionController extends Controller
     {
         DB::beginTransaction();
         try {
+            $usos = Manzano::where("urbanizacion_id", $urbanizacion->id)->get();
+            if (count($usos) > 0) {
+                throw ValidationException::withMessages([
+                    'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
+                ]);
+            }
             $usos = Lote::where("urbanizacion_id", $urbanizacion->id)->get();
             if (count($usos) > 0) {
                 throw ValidationException::withMessages([
