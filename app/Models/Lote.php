@@ -37,9 +37,14 @@ class Lote extends Model
     {
         return $this->belongsTo(Urbanizacion::class, 'urbanizacion_id');
     }
-    
+
     public function manzano()
     {
         return $this->belongsTo(Manzano::class, 'manzano_id');
+    }
+
+    public function planilla_cuota()
+    {
+        return $this->hasOne(PlanillaCuota::class, 'lote_id');
     }
 }

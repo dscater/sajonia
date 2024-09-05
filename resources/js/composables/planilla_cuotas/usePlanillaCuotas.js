@@ -2,32 +2,22 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
-const oLote = ref({
+const oPlanillaCuota = ref({
     id: 0,
-    urbanizacion_id: null,
-    manzano_id: null,
-    nombre: "",
-    ubicacion: "",
-    esquina: "",
-    esquina_area: "",
-    esquina_equipamiento: "",
-    avenida_estr: "",
-    avenida_union: "",
-    superficie: "",
-    costo_contado: "",
-    costo_credito: "",
+    lote_id: "",
+    plazo: "",
+    descripcion: "",
     _method: "POST",
 });
 
-export const useLotes = () => {
+export const usePlanillaCuotas = () => {
     const { flash } = usePage().props;
-    const getLotes = async (data) => {
+    const getPlanillaCuotas = async () => {
         try {
-            const response = await axios.get(route("lotes.listado"), {
+            const response = await axios.get(route("planilla_cuotas.listado"), {
                 headers: { Accept: "application/json" },
-                params: data,
             });
-            return response.data.lotes;
+            return response.data.planilla_cuotas;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -46,12 +36,15 @@ export const useLotes = () => {
         }
     };
 
-    const getLotesApi = async (data) => {
+    const getPlanillaCuotasApi = async (data) => {
         try {
-            const response = await axios.get(route("lotes.paginado", data), {
-                headers: { Accept: "application/json" },
-            });
-            return response.data.lotes;
+            const response = await axios.get(
+                route("planilla_cuotas.paginado", data),
+                {
+                    headers: { Accept: "application/json" },
+                }
+            );
+            return response.data.planilla_cuotas;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -69,11 +62,14 @@ export const useLotes = () => {
             throw err; // Puedes manejar el error según tus necesidades
         }
     };
-    const saveLote = async (data) => {
+    const savePlanillaCuota = async (data) => {
         try {
-            const response = await axios.post(route("lotes.store", data), {
-                headers: { Accept: "application/json" },
-            });
+            const response = await axios.post(
+                route("planilla_cuotas.store", data),
+                {
+                    headers: { Accept: "application/json" },
+                }
+            );
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -100,11 +96,14 @@ export const useLotes = () => {
         }
     };
 
-    const deleteLote = async (id) => {
+    const deletePlanillaCuota = async (id) => {
         try {
-            const response = await axios.delete(route("lotes.destroy", id), {
-                headers: { Accept: "application/json" },
-            });
+            const response = await axios.delete(
+                route("planilla_cuotas.destroy", id),
+                {
+                    headers: { Accept: "application/json" },
+                }
+            );
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -131,53 +130,35 @@ export const useLotes = () => {
         }
     };
 
-    const setLote = (item = null) => {
+    const setPlanillaCuota = (item = null) => {
         if (item) {
-            oLote.value.id = item.id;
-            oLote.value.urbanizacion_id = item.urbanizacion_id;
-            oLote.value.manzano_id = item.manzano_id;
-            oLote.value.nombre = item.nombre;
-            oLote.value.ubicacion = item.ubicacion;
-            oLote.value.esquina = item.esquina;
-            oLote.value.esquina_area = item.esquina_area;
-            oLote.value.esquina_equipamiento = item.esquina_equipamiento;
-            oLote.value.avenida_estr = item.avenida_estr;
-            oLote.value.avenida_union = item.avenida_union;
-            oLote.value.superficie = item.superficie;
-            oLote.value.costo_contado = item.costo_contado;
-            oLote.value.costo_credito = item.costo_credito;
-            oLote.value._method = "PUT";
-            return oLote;
+            oPlanillaCuota.value.id = item.id;
+            oPlanillaCuota.value.lote_id = item.lote_id;
+            oPlanillaCuota.value.plazo = item.plazo;
+            oPlanillaCuota.value.descripcion = item.descripcion;
+            oPlanillaCuota.value._method = "PUT";
+            return oPlanillaCuota;
         }
         return false;
     };
 
-    const limpiarLote = () => {
-        oLote.value.id = 0;
-        oLote.value.urbanizacion_id = null;
-        oLote.value.manzano_id = null;
-        oLote.value.nombre = "";
-        oLote.value.ubicacion = "";
-        oLote.value.esquina = "";
-        oLote.value.esquina_area = "";
-        oLote.value.esquina_equipamiento = "";
-        oLote.value.avenida_estr = "";
-        oLote.value.avenida_union = "";
-        oLote.value.superficie = "";
-        oLote.value.costo_contado = "";
-        oLote.value.costo_credito = "";
-        oLote.value._method = "POST";
+    const limpiarPlanillaCuota = () => {
+        oPlanillaCuota.value.id = 0;
+        oPlanillaCuota.value.lote_id = "";
+        oPlanillaCuota.value.plazo = "";
+        oPlanillaCuota.value.descripcion = "";
+        oPlanillaCuota.value._method = "POST";
     };
 
     onMounted(() => {});
 
     return {
-        oLote,
-        getLotes,
-        getLotesApi,
-        saveLote,
-        deleteLote,
-        setLote,
-        limpiarLote,
+        oPlanillaCuota,
+        getPlanillaCuotas,
+        getPlanillaCuotasApi,
+        savePlanillaCuota,
+        deletePlanillaCuota,
+        setPlanillaCuota,
+        limpiarPlanillaCuota,
     };
 };

@@ -5,6 +5,7 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\ManzanoController;
 use App\Http\Controllers\ParametrizacionController;
+use App\Http\Controllers\PlanillaCuotaController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UrbanizacionController;
@@ -83,6 +84,14 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::get("lotes/paginado", [LoteController::class, 'paginado'])->name("lotes.paginado");
     Route::get("lotes/listado", [LoteController::class, 'listado'])->name("lotes.listado");
     Route::resource("lotes", LoteController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // PLANILLA CUOTAS
+    Route::get("planilla_cuotas/api", [PlanillaCuotaController::class, 'api'])->name("planilla_cuotas.api");
+    Route::get("planilla_cuotas/paginado", [PlanillaCuotaController::class, 'paginado'])->name("planilla_cuotas.paginado");
+    Route::get("planilla_cuotas/listado", [PlanillaCuotaController::class, 'listado'])->name("planilla_cuotas.listado");
+    Route::resource("planilla_cuotas", PlanillaCuotaController::class)->only(
         ["index", "store", "update", "show", "destroy"]
     );
 

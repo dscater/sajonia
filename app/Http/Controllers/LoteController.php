@@ -49,9 +49,19 @@ class LoteController extends Controller
         return Inertia::render("Lotes/Index");
     }
 
-    public function listado()
+    public function listado(Request $request)
     {
-        $lotes = Lote::with(["urbanizacion", "manzano"])->select("lotes.*")->get();
+        $lotes = Lote::with(["urbanizacion", "manzano"])->select("lotes.*");
+
+        if ($request->sin_planilla) {
+            $lotes = $lotes->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('planilla_cuotas')
+                    ->whereRaw('planilla_cuotas.lote_id = lotes.id');
+            });
+        }
+
+        $lotes = $lotes->get();
         return response()->JSON([
             "lotes" => $lotes
         ]);

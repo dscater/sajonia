@@ -573,6 +573,7 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
+                    v-if="user_logeado.permisos.includes('planilla_cuotas.index')"
                     class="menu-item"
                     :class="[
                         route_current == 'planilla_cuotas.index'
@@ -580,7 +581,7 @@ const logout = () => {
                             : '',
                     ]"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link :href="route('planilla_cuotas.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-clipboard"></i>
                         </div>
