@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id");
-            $table->string("estado_cliente");
+            $table->string("estado_cliente")->default("ACTIVO");
             $table->timestamps();
 
             $table->foreign("user_id")->on("users")->references("id");

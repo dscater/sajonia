@@ -78,7 +78,7 @@ class UsuarioController extends Controller
     {
         Log::debug($request);
         $usuarios = User::where("id", "!=", 1)->where("tipo", "!=", "CLIENTE");
-        $usuarios = $usuarios->paginate(10);
+        $usuarios = $usuarios->get();
         return response()->JSON(["data" => $usuarios]);
     }
 
@@ -242,6 +242,9 @@ class UsuarioController extends Controller
 
 
             DB::commit();
+            if ($user->tipo == 'CLIENTE') {
+                return redirect()->route("clientes.index")->with("bien", "Registro actualizado");
+            }
             return redirect()->route("usuarios.index")->with("bien", "Registro actualizado");
         } catch (\Exception $e) {
             DB::rollBack();

@@ -88,9 +88,9 @@ class User extends Authenticatable
     }
 
     // RELACIONES
-    public function datos_personal()
+    public function cliente()
     {
-        return $this->hasOne(DatosPersonal::class, 'user_id');
+        return $this->hasOne(Cliente::class, 'user_id');
     }
 
     // FUNCIONES

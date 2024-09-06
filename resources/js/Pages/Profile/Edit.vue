@@ -176,18 +176,24 @@ const enviaFormulario = () => {
                                 </div>
                                 <div class="col-8">{{ user.full_ci }}</div>
                             </div>
-                            <div class="row">
-                                <div class="text-right font-weight-bold col-4">
-                                    Dirección:
+                            <template v-if="user.tipo != 'CLIENTE'">
+                                <div class="row">
+                                    <div
+                                        class="text-right font-weight-bold col-4"
+                                    >
+                                        Dirección:
+                                    </div>
+                                    <div class="col-8">{{ user.dir }}</div>
                                 </div>
-                                <div class="col-8">{{ user.dir }}</div>
-                            </div>
-                            <div class="row">
-                                <div class="text-right font-weight-bold col-4">
-                                    Correo:
+                                <div class="row">
+                                    <div
+                                        class="text-right font-weight-bold col-4"
+                                    >
+                                        Correo:
+                                    </div>
+                                    <div class="col-8">{{ user.email }}</div>
                                 </div>
-                                <div class="col-8">{{ user.email }}</div>
-                            </div>
+                            </template>
                             <div class="row">
                                 <div class="text-right font-weight-bold col-4">
                                     Teléfono/Celular:

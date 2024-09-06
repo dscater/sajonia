@@ -33,6 +33,16 @@ class UserController extends Controller
             "planilla_cuotas.create",
             "planilla_cuotas.edit",
             "planilla_cuotas.destroy",
+            
+            "clientes.index",
+            "clientes.create",
+            "clientes.edit",
+            "clientes.destroy",
+            
+            "venta_lotes.index",
+            "venta_lotes.create",
+            "venta_lotes.edit",
+            "venta_lotes.destroy",
 
             "configuracions.index",
             "configuracions.create",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoteController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UrbanizacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VentaLoteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -82,6 +84,7 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     // LOTES
     Route::get("lotes/api", [LoteController::class, 'api'])->name("lotes.api");
     Route::get("lotes/paginado", [LoteController::class, 'paginado'])->name("lotes.paginado");
+    Route::get("lotes/listadoByManzano", [LoteController::class, 'listadoByManzano'])->name("lotes.listadoByManzano");
     Route::get("lotes/listado", [LoteController::class, 'listado'])->name("lotes.listado");
     Route::resource("lotes", LoteController::class)->only(
         ["index", "store", "update", "show", "destroy"]
@@ -92,6 +95,22 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::get("planilla_cuotas/paginado", [PlanillaCuotaController::class, 'paginado'])->name("planilla_cuotas.paginado");
     Route::get("planilla_cuotas/listado", [PlanillaCuotaController::class, 'listado'])->name("planilla_cuotas.listado");
     Route::resource("planilla_cuotas", PlanillaCuotaController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // CLIENTES
+    Route::get("clientes/api", [ClienteController::class, 'api'])->name("clientes.api");
+    Route::get("clientes/paginado", [ClienteController::class, 'paginado'])->name("clientes.paginado");
+    Route::get("clientes/listado", [ClienteController::class, 'listado'])->name("clientes.listado");
+    Route::resource("clientes", ClienteController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // VENTA LOTES
+    Route::get("venta_lotes/api", [VentaLoteController::class, 'api'])->name("venta_lotes.api");
+    Route::get("venta_lotes/paginado", [VentaLoteController::class, 'paginado'])->name("venta_lotes.paginado");
+    Route::get("venta_lotes/listado", [VentaLoteController::class, 'listado'])->name("venta_lotes.listado");
+    Route::resource("venta_lotes", VentaLoteController::class)->only(
         ["index", "store", "update", "show", "destroy"]
     );
 

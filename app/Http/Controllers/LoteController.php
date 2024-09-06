@@ -67,6 +67,14 @@ class LoteController extends Controller
         ]);
     }
 
+    public function listadoByManzano(Request $request)
+    {
+        $lotes = Lote::with(["manzano"])->select("lotes.*")->where("manzano_id", $request->id)->get();
+        return response()->JSON([
+            "lotes" => $lotes
+        ]);
+    }
+
     public function api(Request $request)
     {
         // Log::debug($request);
