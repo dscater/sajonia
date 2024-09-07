@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("descripcion", 900);
             $table->date("fecha");
             $table->time("hora");
+            $table->unsignedBigInteger("registro_id")->nullable();
             $table->timestamps();
         });
     }

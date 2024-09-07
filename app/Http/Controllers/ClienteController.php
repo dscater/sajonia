@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\HistorialAccion;
+use App\Models\Notificacion;
+use App\Models\NotificacionUser;
 use App\Models\Pago;
 use App\Models\User;
 use App\Models\VentaLote;
@@ -164,6 +166,85 @@ class ClienteController extends Controller
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
+
+            DB::commit();
+            return redirect()->route("clientes.index")->with("bien", "Registro actualizado");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::debug($e->getMessage());
+            throw ValidationException::withMessages([
+                'error' =>  $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_estado(Cliente $cliente, Request $request)
+    {
+        $request->validate(["estado_cliente"=>"required"], ["estado_cliente.required","Debes seleccionar una opción"]);
+        DB::beginTransaction();
+        try {
+            if ($cliente->estado_cliente != $request->estado_cliente) {
+                $user = $cliente->user;
+                $datos_original = HistorialAccion::getDetalleRegistro($user, "users");
+
+                $cliente->update([
+                    "estado_cliente" => $request->estado_cliente
+                ]);
+                $cliente->venta_lotes()->update([
+                    "estado_cliente" => $request->estado_cliente
+                ]);
+
+                $fecha_actual = date("Y-m-d");
+
+                $notificacion = Notificacion::where("fecha", $fecha_actual)
+                    ->where("tipo_notificacion", "ESTADO CLIENTE")
+                    ->where("registro_id", $cliente->id)
+                    ->get()->first();
+                if (!$notificacion) {
+                    $notificacion = Notificacion::create([
+                        "descripcion" => "SE CAMBIO EL ESTADO DEL CLIENTE " . $cliente->user->full_name . " A " . $request->estado_cliente,
+                        "fecha" => $fecha_actual,
+                        "hora" => date("H:i:s"),
+                        "tipo_notificacion" => "ESTADO CLIENTE",
+                        "registro_id" => $cliente->id,
+                    ]);
+                }
+
+                $users = User::whereIn("tipo", ["ADMINISTRADOR", "SUPERVISOR", "AGENTE INMOBILIARIO"])->get();
+                foreach ($users as $value) {
+                    NotificacionUser::create([
+                        "notificacion_id" => $notificacion->id,
+                        "user_id" => $value->id
+                    ]);
+                }
+
+                NotificacionUser::create([
+                    "notificacion_id" => $notificacion->id,
+                    "user_id" => $cliente->user->id
+                ]);
+
+                $cliente->fecha_estado = null;
+                $cliente->fechan = null;
+                if ($request->estado_cliente == 'DISPENSA') {
+                    $cliente->fecha_estado = $fecha_actual;
+                    $fechan = date("Y-m-d", strtotime($fecha_actual . '+6 month'));
+                    $cliente->fechan = $fechan;
+                }
+
+                $cliente->save();
+
+                $datos_nuevo = HistorialAccion::getDetalleRegistro($user, "users");
+                HistorialAccion::create([
+                    'user_id' => Auth::user()->id,
+                    'accion' => 'MODIFICACIÓN',
+                    'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UN CLIENTE',
+                    'datos_original' => $datos_original,
+                    'datos_nuevo' => $datos_nuevo,
+                    'modulo' => 'CLIENTES',
+                    'fecha' => date('Y-m-d'),
+                    'hora' => date('H:i:s')
+                ]);
+            }
 
             DB::commit();
             return redirect()->route("clientes.index")->with("bien", "Registro actualizado");

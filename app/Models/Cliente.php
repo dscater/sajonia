@@ -12,10 +12,17 @@ class Cliente extends Model
     protected $fillable = [
         "user_id",
         "estado_cliente",
+        "fecha_estado",
+        "fechan"
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function venta_lotes()
+    {
+        return $this->hasMany(VentaLote::class, 'cliente_id');
     }
 }

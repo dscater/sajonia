@@ -97,6 +97,7 @@ class VentaLoteController extends Controller
         try {
             $request["user_id"] = Auth::user()->id;
             $request["estado_pago"] = "PENDIENTE";
+            $request["estado_cliente"] = "ACTIVO";
             $request["total_venta"] = 0;
             $request['fecha_registro'] = date('Y-m-d');
             // crear el VentaLote

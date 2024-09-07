@@ -5,6 +5,7 @@ use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\ManzanoController;
+use App\Http\Controllers\NotificacionUserController;
 use App\Http\Controllers\ParametrizacionController;
 use App\Http\Controllers\PlanillaCuotaController;
 use App\Http\Controllers\PortalController;
@@ -63,6 +64,8 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::resource("usuarios", UsuarioController::class)->only(
         ["index", "store"]
     );
+    Route::get("usuarios/notificacion/{user}", [NotificacionUserController::class, 'notificacion'])->name("usuarios.notificacion");
+
 
     // URBACIONAZION
     Route::get("urbanizacions/api", [UrbanizacionController::class, 'api'])->name("urbanizacions.api");
@@ -99,6 +102,7 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     );
 
     // CLIENTES
+    Route::put("clientes/update_estado/{cliente}", [ClienteController::class, 'update_estado'])->name("clientes.update_estado");
     Route::get("clientes/api", [ClienteController::class, 'api'])->name("clientes.api");
     Route::get("clientes/paginado", [ClienteController::class, 'paginado'])->name("clientes.paginado");
     Route::get("clientes/listado", [ClienteController::class, 'listado'])->name("clientes.listado");
@@ -112,6 +116,14 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::get("venta_lotes/listado", [VentaLoteController::class, 'listado'])->name("venta_lotes.listado");
     Route::resource("venta_lotes", VentaLoteController::class)->only(
         ["index", "store", "update", "show", "destroy"]
+    );
+
+    // NOTIFICACIONES
+    Route::get("notificacion_users/api", [NotificacionUserController::class, 'api'])->name("notificacion_users.api");
+    Route::get("notificacion_users/paginado", [NotificacionUserController::class, 'paginado'])->name("notificacion_users.paginado");
+    Route::get("notificacion_users/listado", [NotificacionUserController::class, 'listado'])->name("notificacion_users.listado");
+    Route::resource("notificacion_users", NotificacionUserController::class)->only(
+        ["index", "show"]
     );
 
     // REPORTES

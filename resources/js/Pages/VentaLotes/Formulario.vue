@@ -568,7 +568,7 @@ const cerrarDialog = () => {
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4 mt-2">
+                            <!-- <div class="col-md-4 mt-2">
                                 <label>Estado del Cliente*</label>
                                 <select
                                     class="form-select"
@@ -594,7 +594,7 @@ const cerrarDialog = () => {
                                         {{ form.errors?.estado_cliente }}
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </form>
                 </div>

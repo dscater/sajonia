@@ -24,6 +24,7 @@ import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
 import FormPassword from "./FormPassword.vue";
+import FormEstado from "./FormEstado.vue";
 // const { mobile, identificaDispositivo } = useMenu();
 const { setLoading } = useApp();
 onMounted(() => {
@@ -64,7 +65,7 @@ const columns = [
         data: "fono",
     },
     {
-        title: "ESTADO",
+        title: "ESTADO DEL CLIENTE",
         data: "cliente.estado_cliente",
     },
     {
@@ -90,6 +91,9 @@ const columns = [
                 <button class="mx-0 rounded-0 btn btn-info password" data-id="${
                     row.cliente.id
                 }"><i class="fa fa-key"></i></button>
+                <button class="mx-0 rounded-0 btn btn-primary estado" data-id="${
+                    row.cliente.id
+                }"><i class="fa fa-id-card"></i></button>
                 <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
                     row.cliente.id
                 }"><i class="fa fa-edit"></i></button>
@@ -109,6 +113,8 @@ const accion_dialog = ref(0);
 const open_dialog = ref(false);
 const accion_dialog_pass = ref(0);
 const open_dialog_pass = ref(false);
+const accion_dialog_estado = ref(0);
+const open_dialog_estado = ref(false);
 
 const agregarRegistro = () => {
     limpiarCliente();
@@ -164,11 +170,25 @@ const accionesRow = () => {
             open_dialog_pass.value = true;
         });
     });
+    // estado
+    $("#table-cliente").on("click", "button.estado", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        axios.get(route("clientes.show", id)).then((response) => {
+            let item = response.data.user;
+            item.cliente_id = response.data.id;
+            item.estado_cliente = response.data.estado_cliente;
+            setCliente(item);
+            accion_dialog_estado.value = 1;
+            open_dialog_estado.value = true;
+        });
+    });
 };
 
 var datatable = null;
 const datatableInitialized = ref(false);
 const updateDatatable = () => {
+    accion_dialog.value = false;
     datatable.ajax.reload();
 };
 
@@ -249,4 +269,10 @@ onBeforeUnmount(() => {
         @envio-formulario="open_dialog_pass = false"
         @cerrar-dialog="open_dialog_pass = false"
     ></FormPassword>
+    <FormEstado
+        :open_dialog="open_dialog_estado"
+        :accion_dialog="accion_dialog_estado"
+        @envio-formulario="updateDatatable"
+        @cerrar-dialog="open_dialog_estado = false"
+    ></FormEstado>
 </template>

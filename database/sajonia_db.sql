@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-09-2024 a las 17:41:00
+-- Tiempo de generación: 07-09-2024 a las 18:17:48
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.22
 
@@ -31,6 +31,8 @@ CREATE TABLE `clientes` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
   `estado_cliente` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ACTIVO',
+  `fecha_estado` date DEFAULT NULL,
+  `fechan` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -39,8 +41,8 @@ CREATE TABLE `clientes` (
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `user_id`, `estado_cliente`, `created_at`, `updated_at`) VALUES
-(1, 4, 'ACTIVO', '2024-09-06 19:40:09', '2024-09-06 19:40:09');
+INSERT INTO `clientes` (`id`, `user_id`, `estado_cliente`, `fecha_estado`, `fechan`, `created_at`, `updated_at`) VALUES
+(1, 4, 'DISPENSA', '2024-09-07', '2025-03-07', '2024-09-06 19:40:09', '2024-09-07 20:55:00');
 
 -- --------------------------------------------------------
 
@@ -153,7 +155,9 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (55, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN LA CONTRASEÑA DE UN USUARIO', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$42OTS8KZvTnU8oo.V8rsveZBr8GTAPVKvdRdAFRaoG8sjoOXn9t12<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:40:09<br/>', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$vrWsViHHfQ52OQ1xVNV..utUwM0XJj5day4xLw4Pra64RyjAbCPDa<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:43:23<br/>', 'USUARIOS', '2024-09-06', '15:43:23', '2024-09-06 19:43:23', '2024-09-06 19:43:23'),
 (56, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA VENTA DE LOTE', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 12000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CRÉDITO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:17:08<br/>', NULL, 'VENTA DE LOTES', '2024-09-06', '17:17:08', '2024-09-06 21:17:08', '2024-09-06 21:17:08'),
 (57, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA VENTA DE LOTE', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 12000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CRÉDITO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:17:08<br/>', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 10000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CONTADO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:40:17<br/>', 'VENTA DE LOTES', '2024-09-06', '17:40:17', '2024-09-06 21:40:17', '2024-09-06 21:40:17'),
-(58, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA VENTA DE LOTE', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 10000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CONTADO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:40:17<br/>', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 12000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CRÉDITO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:40:30<br/>', 'VENTA DE LOTES', '2024-09-06', '17:40:30', '2024-09-06 21:40:30', '2024-09-06 21:40:30');
+(58, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA VENTA DE LOTE', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 10000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CONTADO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:40:17<br/>', 'id: 1<br/>user_id: 1<br/>cliente_id: 1<br/>urbanizacion_id: 1<br/>manzano_id: 1<br/>lote_id: 1<br/>fecha_formalizacion: 2024-09-09<br/>total_venta: 12000.00<br/>estado_pago: PENDIENTE<br/>tipo_pago: CRÉDITO<br/>sistema: PENDIENTE<br/>estudios_com: PENDIENTE<br/>minuta: PENDIENTE<br/>titulacion: PENDIENTE<br/>estado_cliente: ACTIVO<br/>fecha_registro: 2024-09-06<br/>created_at: 2024-09-06 17:17:07<br/>updated_at: 2024-09-06 17:40:30<br/>', 'VENTA DE LOTES', '2024-09-06', '17:40:30', '2024-09-06 21:40:30', '2024-09-06 21:40:30'),
+(59, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$FTckeBbcsLg3dJWv34dOIOSjEp.mMt.Ek5kUFZF/ReU1iXMXrKc0W<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:44:55<br/>', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$FTckeBbcsLg3dJWv34dOIOSjEp.mMt.Ek5kUFZF/ReU1iXMXrKc0W<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:44:55<br/>', 'CLIENTES', '2024-09-07', '16:55:00', '2024-09-07 20:55:00', '2024-09-07 20:55:00'),
+(60, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$FTckeBbcsLg3dJWv34dOIOSjEp.mMt.Ek5kUFZF/ReU1iXMXrKc0W<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:44:55<br/>', 'id: 4<br/>usuario: EGONZALES<br/>nombre: EDUARDO<br/>paterno: GONZALES<br/>materno: PAREDES<br/>ci: 4432<br/>ci_exp: LP<br/>dir: <br/>email: <br/>fono: 76767676<br/>password: $2y$12$FTckeBbcsLg3dJWv34dOIOSjEp.mMt.Ek5kUFZF/ReU1iXMXrKc0W<br/>tipo: CLIENTE<br/>foto: <br/>fecha_registro: 2024-09-06<br/>acceso: 1<br/>created_at: 2024-09-06 15:40:09<br/>updated_at: 2024-09-06 15:44:55<br/>', 'CLIENTES', '2024-09-07', '16:55:41', '2024-09-07 20:55:41', '2024-09-07 20:55:41');
 
 -- --------------------------------------------------------
 
@@ -255,9 +259,17 @@ CREATE TABLE `notificacions` (
   `descripcion` varchar(900) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
+  `registro_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `notificacions`
+--
+
+INSERT INTO `notificacions` (`id`, `tipo_notificacion`, `descripcion`, `fecha`, `hora`, `registro_id`, `created_at`, `updated_at`) VALUES
+(1, 'ESTADO CLIENTE', 'SE CAMBIO EL ESTADO DEL CLIENTE EDUARDO GONZALES PAREDES A DISPENSA', '2024-09-07', '16:55:00', 1, '2024-09-07 20:55:00', '2024-09-07 20:55:00');
 
 -- --------------------------------------------------------
 
@@ -269,9 +281,20 @@ CREATE TABLE `notificacion_users` (
   `id` bigint UNSIGNED NOT NULL,
   `notificacion_id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
+  `visto` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `notificacion_users`
+--
+
+INSERT INTO `notificacion_users` (`id`, `notificacion_id`, `user_id`, `visto`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, '2024-09-07 20:55:00', '2024-09-07 21:17:25'),
+(2, 1, 2, 0, '2024-09-07 20:55:00', '2024-09-07 20:55:00'),
+(3, 1, 3, 0, '2024-09-07 20:55:00', '2024-09-07 20:55:00'),
+(4, 1, 4, 0, '2024-09-07 20:55:00', '2024-09-07 20:55:00');
 
 -- --------------------------------------------------------
 
@@ -400,6 +423,8 @@ CREATE TABLE `venta_lotes` (
   `titulacion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `estado_cliente` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` date NOT NULL,
+  `fecha_estado` date DEFAULT NULL,
+  `fechan` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -408,8 +433,8 @@ CREATE TABLE `venta_lotes` (
 -- Volcado de datos para la tabla `venta_lotes`
 --
 
-INSERT INTO `venta_lotes` (`id`, `user_id`, `cliente_id`, `urbanizacion_id`, `manzano_id`, `lote_id`, `fecha_formalizacion`, `total_venta`, `estado_pago`, `tipo_pago`, `sistema`, `estudios_com`, `minuta`, `titulacion`, `estado_cliente`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 1, '2024-09-09', 12000.00, 'PENDIENTE', 'CRÉDITO', 'PENDIENTE', 'PENDIENTE', 'PENDIENTE', 'PENDIENTE', 'ACTIVO', '2024-09-06', '2024-09-06 21:17:07', '2024-09-06 21:40:30');
+INSERT INTO `venta_lotes` (`id`, `user_id`, `cliente_id`, `urbanizacion_id`, `manzano_id`, `lote_id`, `fecha_formalizacion`, `total_venta`, `estado_pago`, `tipo_pago`, `sistema`, `estudios_com`, `minuta`, `titulacion`, `estado_cliente`, `fecha_registro`, `fecha_estado`, `fechan`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 1, '2024-09-09', 12000.00, 'PENDIENTE', 'CRÉDITO', 'PENDIENTE', 'PENDIENTE', 'PENDIENTE', 'PENDIENTE', 'DISPENSA', '2024-09-06', NULL, NULL, '2024-09-06 21:17:07', '2024-09-07 20:55:00');
 
 -- --------------------------------------------------------
 
@@ -570,7 +595,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `lotes`
@@ -594,13 +619,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `notificacions`
 --
 ALTER TABLE `notificacions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `notificacion_users`
 --
 ALTER TABLE `notificacion_users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`

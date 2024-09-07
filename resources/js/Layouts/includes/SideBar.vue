@@ -525,12 +525,13 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
+                    v-if="user_logeado.permisos.includes('notificacion_users.index')"
                     class="menu-item"
                     :class="[
-                        route_current == 'notificacions.index' ? 'active' : '',
+                        route_current == 'notificacion_users.index' ? 'active' : '',
                     ]"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link :href="route('notificacion_users.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-bell"></i>
                         </div>
