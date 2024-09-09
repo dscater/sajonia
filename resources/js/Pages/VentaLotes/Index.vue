@@ -16,7 +16,7 @@ const breadbrums = [
 </script>
 <script setup>
 import { useApp } from "@/composables/useApp";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { useVentaLotes } from "@/composables/venta_lotes/useVentaLotes";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
@@ -24,6 +24,8 @@ import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
 // const { mobile, identificaDispositivo } = useMenu();
+const { props } = usePage();
+console.log(props);
 const { setLoading } = useApp();
 onMounted(() => {
     setTimeout(() => {
@@ -95,18 +97,26 @@ const columns = [
         title: "ACCIONES",
         data: null,
         render: function (data, type, row) {
-            return `
-                <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
-                    row.id
-                }"><i class="fa fa-edit"></i></button>
-                <button class="mx-0 rounded-0 btn btn-danger eliminar"
+            let planilla = `<button class="mx-0 rounded-0 btn btn-primary planilla" data-id="${row.id}"><i class="fa fa-file-pdf"></i></button>`;
+            if (row.tipo_pago == "CONTADO") {
+                planilla = "";
+            }
+            let editar = ` <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${row.id}"><i class="fa fa-edit"></i></button>`;
+            let eliminar = `<button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}" 
-                 data-nombre="${row.nombre}" 
+                 data-nombre="${row.cliente.user.full_name}" 
                  data-url="${route(
                      "venta_lotes.destroy",
                      row.id
-                 )}"><i class="fa fa-trash"></i></button>
-            `;
+                 )}"><i class="fa fa-trash"></i></button>`;
+
+            if (!props.auth.user.permisos.includes("venta_lotes.edit")) {
+                editar = "";
+            }
+            if (!props.auth.user.permisos.includes("venta_lotes.destroy")) {
+                eliminar = "";
+            }
+            return `${planilla}${editar}${eliminar}`;
         },
     },
 ];
@@ -121,6 +131,15 @@ const agregarRegistro = () => {
 };
 
 const accionesRow = () => {
+    // planilla
+    $("#table-venta_lote").on("click", "button.planilla", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        const url = route("reportes.planilla_venta", {
+            venta_lote_id: id,
+        });
+        window.open(url, "_blank");
+    });
     // editar
     $("#table-venta_lote").on("click", "button.editar", function (e) {
         e.preventDefault();
@@ -163,6 +182,13 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
+    if (props.planilla) {
+        const url = route("reportes.r_planilla_pagos", {
+            venta_lote_id: props.planilla,
+        });
+        window.open(url, "_blank");
+    }
+
     datatable = initDataTable(
         "#table-venta_lote",
         columns,
@@ -199,7 +225,14 @@ onBeforeUnmount(() => {
             <div class="panel panel-inverse">
                 <!-- BEGIN panel-heading -->
                 <div class="panel-heading">
-                    <h4 class="panel-title btn-nuevo">
+                    <h4
+                        class="panel-title btn-nuevo"
+                        v-if="
+                            props.auth.user.permisos.includes(
+                                'venta_lotes.create'
+                            )
+                        "
+                    >
                         <button
                             type="button"
                             class="btn btn-primary"

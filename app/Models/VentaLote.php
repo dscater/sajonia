@@ -27,7 +27,7 @@ class VentaLote extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ["fecha_registro_t", "fecha_formalizacion_t"];
+    protected $appends = ["fecha_registro_t", "fecha_formalizacion_t", "restante"];
 
     public function getFechaRegistroTAttribute()
     {
@@ -37,6 +37,25 @@ class VentaLote extends Model
     public function getFechaFormalizacionTAttribute()
     {
         return date("d/m/Y", strtotime($this->fecha_formalizacion));
+    }
+
+    public function getRestanteAttribute()
+    {
+        $venta_planillas = VentaPlanilla::where("venta_lote_id", $this->id)
+            ->where("estado", 0)
+            ->get();
+        if (count($venta_planillas) > 0) {
+            $restante = $venta_planillas = VentaPlanilla::where("venta_lote_id", $this->id)
+                ->where("estado", 0)
+                ->sum("cuota");
+
+            return round($restante, 2);
+        } elseif ($this->tipo_pago == 'CRÉDITO') {
+            $this->estado_pago = "CANCELADO";
+            $this->save();
+        }
+
+        return 0;
     }
 
     public function user()

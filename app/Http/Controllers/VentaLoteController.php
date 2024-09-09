@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -25,7 +26,6 @@ class VentaLoteController extends Controller
         "estudios_com" => "required",
         "minuta" => "required",
         "titulacion" => "required",
-        "estado_cliente" => "required",
     ];
 
     public $mensajes = [
@@ -39,7 +39,6 @@ class VentaLoteController extends Controller
         "estudios_com.required" => "Este campo es obligatorio",
         "minuta.required" => "Este campo es obligatorio",
         "titulacion.required" => "Este campo es obligatorio",
-        "estado_cliente.required" => "Este campo es obligatorio",
     ];
 
     public function index()
@@ -65,10 +64,43 @@ class VentaLoteController extends Controller
         ]);
     }
 
+    public function byCliente(Request $request)
+    {
+        $venta_lotes = VentaLote::with(["urbanizacion", "manzano", "lote", "cliente.user"])->select("venta_lotes.*");
+        if ($request->sin_pagar) {
+            $venta_lotes->where("estado_pago", "PENDIENTE");
+        }
+        $venta_lotes->where("cliente_id", $request->id);
+        $venta_lotes = $venta_lotes->get();
+        return response()->JSON([
+            "data" => $venta_lotes
+        ]);
+    }
+
+    public function getCuota(Request $request)
+    {
+        $venta_lote = VentaLote::find($request->id);
+
+        if ($venta_lote && count($venta_lote->venta_planillas) > 0) {
+            return response()->JSON([
+                "cuota" => $venta_lote->venta_planillas[0]->cuota,
+                "correcto" => true
+            ]);
+        }
+        return response()->JSON([
+            "cuota" => 0,
+            "resante" => $venta_lote->restante,
+            "correcto" => false
+        ]);
+    }
+
     public function api(Request $request)
     {
         // Log::debug($request);
         $venta_lotes = VentaLote::with(["urbanizacion", "manzano", "lote", "cliente.user"])->select("venta_lotes.*");
+        if (Auth::user()->tipo == 'CLIENTE') {
+            $venta_lotes->where("cliente_id", Auth::user()->cliente->id);
+        }
         $venta_lotes = $venta_lotes->get();
         return response()->JSON([
             "data" => $venta_lotes
@@ -131,6 +163,9 @@ class VentaLoteController extends Controller
             $nueva_venta_lote->total_venta = $total_venta;
             $nueva_venta_lote->save();
 
+            $nueva_venta_lote->lote->vendido = 1;
+            $nueva_venta_lote->lote->save();
+
             $datos_original = HistorialAccion::getDetalleRegistro($nueva_venta_lote, "venta_lotes");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
@@ -143,7 +178,12 @@ class VentaLoteController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route("venta_lotes.index")->with("bien", "Registro realizado");
+            if ($nueva_venta_lote->tipo_pago == 'CRÉDITO') {
+                $request->session()->flash('planilla', $nueva_venta_lote->id);
+                return redirect()->route("venta_lotes.index")->with('planilla', $nueva_venta_lote->id)->with('imprime_planilla', $nueva_venta_lote->id);
+            } else {
+                return redirect()->route("venta_lotes.index")->with("bien", "Registro realizado");
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             throw ValidationException::withMessages([
@@ -174,32 +214,35 @@ class VentaLoteController extends Controller
                 $total_venta = $venta_lote->lote->costo_contado;
 
                 // verificar contado/credito
-                if ($venta_lote->tipo_pago == 'CRÉDITO' && $tipo_anterior == 'CONTADO') {
-                    // generar planilla
-                    $fecha_ini = date("Y-m-d", strtotime($venta_lote->fecha_formalizacion));
-                    // plazo lote
-                    $plazo = $venta_lote->lote->planilla_cuota->plazo;
-                    $total_venta = $venta_lote->lote->costo_credito;
-                    $cuota = $total_venta / $plazo;
-                    $cuota = round($cuota, 2);
-                    $suma_cuota = $cuota;
-                    $fecha_pago = $fecha_ini;
-                    for ($i = 1; $i <= $plazo; $i++) {
-                        // crear planilla
-                        $fecha_pago = date("Y-m-d", strtotime($fecha_pago . "+1 month"));
-                        $venta_lote->venta_planillas()->create([
-                            "cliente_id" => $venta_lote->cliente_id,
-                            "nro_cuota" => $i,
-                            "cuota" => $cuota,
-                            "total_sumado" => $suma_cuota,
-                            "estado" => 0,
-                            "fecha_pago" => $fecha_pago,
-                        ]);
-                        $suma_cuota += (float)$cuota;
+                if ($venta_lote->tipo_pago != $tipo_anterior) {
+                    if ($tipo_anterior == 'CONTADO' && $venta_lote->tipo_pago == 'CRÉDITO') {
+                        // generar planilla
+                        $fecha_ini = date("Y-m-d", strtotime($venta_lote->fecha_formalizacion));
+                        // plazo lote
+                        $plazo = $venta_lote->lote->planilla_cuota->plazo;
+                        $total_venta = $venta_lote->lote->costo_credito;
+                        $cuota = $total_venta / $plazo;
+                        $cuota = round($cuota, 2);
+                        $suma_cuota = $cuota;
+                        $fecha_pago = $fecha_ini;
+                        for ($i = 1; $i <= $plazo; $i++) {
+                            // crear planilla
+                            $fecha_pago = date("Y-m-d", strtotime($fecha_pago . "+1 month"));
+                            $venta_lote->venta_planillas()->create([
+                                "cliente_id" => $venta_lote->cliente_id,
+                                "nro_cuota" => $i,
+                                "cuota" => $cuota,
+                                "total_sumado" => $suma_cuota,
+                                "estado" => 0,
+                                "fecha_pago" => $fecha_pago,
+                            ]);
+                            $suma_cuota += (float)$cuota;
+                        }
+                    } elseif ($venta_lote->tipo_pago == 'CONTADO' && $tipo_anterior == 'CRÉDITO') {
+
+                        // eliminar planilla de pago
+                        $venta_lote->venta_planillas()->delete();
                     }
-                } elseif ($tipo_anterior == 'CRÉDITO') {
-                    // eliminar planilla de pago
-                    $venta_lote->venta_planillas()->delete();
                 }
                 $venta_lote->total_venta = $total_venta;
                 $venta_lote->save();
@@ -240,6 +283,9 @@ class VentaLoteController extends Controller
                     'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
                 ]);
             }
+
+            $venta_lote->lote->vendido = 0;
+            $venta_lote->lote->save();
 
             $datos_original = HistorialAccion::getDetalleRegistro($venta_lote, "venta_lotes");
             $venta_lote->venta_planillas()->delete();

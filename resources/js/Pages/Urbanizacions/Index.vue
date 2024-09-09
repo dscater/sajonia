@@ -16,7 +16,7 @@ const breadbrums = [
 </script>
 <script setup>
 import { useApp } from "@/composables/useApp";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
 import { useUrbanizacions } from "@/composables/urbanizacions/useUrbanizacions";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
@@ -60,6 +60,9 @@ const columns = [
         data: null,
         render: function (data, type, row) {
             return `
+                <button class="mx-0 rounded-0 btn btn-success ver" data-id="${
+                    row.id
+                }"><i class="fa fa-table"></i></button>
                 <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
                     row.id
                 }"><i class="fa fa-edit"></i></button>
@@ -85,6 +88,12 @@ const agregarRegistro = () => {
 };
 
 const accionesRow = () => {
+    // ver
+    $("#table-urbanizacion").on("click", "button.ver", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        router.get(route("urbanizacions.show", id));
+    });
     // editar
     $("#table-urbanizacion").on("click", "button.editar", function (e) {
         e.preventDefault();
@@ -185,9 +194,7 @@ onBeforeUnmount(() => {
                         width="100%"
                         class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
                     >
-                        <thead>
-                       
-                        </thead>
+                        <thead></thead>
                         <tbody></tbody>
                     </table>
                 </div>

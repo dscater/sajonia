@@ -18,6 +18,13 @@ class VentaPlanilla extends Model
         "estado",
         "fecha_pago",
     ];
+    
+    protected $appends = ["fecha_pago"];
+
+    public function getFechaPagoTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha_pago));
+    }
 
     public function venta_lote()
     {

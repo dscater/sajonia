@@ -69,7 +69,28 @@ class LoteController extends Controller
 
     public function listadoByManzano(Request $request)
     {
-        $lotes = Lote::with(["manzano"])->select("lotes.*")->where("manzano_id", $request->id)->get();
+        $lotes = Lote::with(["manzano"])->select("lotes.*")->where("manzano_id", $request->id);
+
+        if ($request->sin_venta) {
+            if (!$request->data_id) {
+                $lotes->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('venta_lotes')
+                        ->whereRaw('venta_lotes.lote_id = lotes.id');
+                });
+            } else {
+                $lotes = $lotes->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('planilla_cuotas')
+                        ->whereRaw('planilla_cuotas.lote_id = lotes.id');
+                })->orWhere(function ($subquery) use ($request) {
+                    $subquery->whereIn('lotes.id', [$request->data_id]);
+                });
+            }
+        }
+
+        $lotes = $lotes->get();
+
         return response()->JSON([
             "lotes" => $lotes
         ]);

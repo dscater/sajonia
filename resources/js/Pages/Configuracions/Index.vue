@@ -69,61 +69,160 @@ onMounted(() => {});
 <template>
     <Head title="Parametrización"></Head>
     <h3 class="text-center text-h4">CONFIGURACIÓN</h3>
-    <div class="row">
-        <form @submit.prevent="enviarFormulario()">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="">Nombre del Sistema</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            v-model="form.nombre_sistema"
-                        />
-                        <span
-                            class="text-danger"
-                            v-if="form.errors?.nombre_sistema"
-                            >{{ form.errors.nombre_sistema }}</span
-                        >
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="">Alias</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            v-model="form.alias"
-                        />
-                        <span class="text-danger" v-if="form.errors?.alias">{{
-                            form.errors.alias
-                        }}</span>
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="">Logo</label>
-                        <input
-                            type="file"
-                            class="form-control"
-                            @change="cargaArchivo($event, 'logo')"
-                            ref="logo"
-                        />
-                        <div class="logo_muestra w-100 text-center">
-                            <img
-                                :src="form.url_logo"
-                                alt=""
-                                v-if="form.url_logo"
-                            />
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <form @submit.prevent="enviarFormulario()">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Nombre del Sistema</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.nombre_sistema"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.nombre_sistema"
+                                    >{{ form.errors.nombre_sistema }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Alias</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.alias"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.alias"
+                                    >{{ form.errors.alias }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Razón Social</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.razon_social"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.razon_social"
+                                    >{{ form.errors.razon_social }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Ciudad</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.ciudad"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.ciudad"
+                                    >{{ form.errors.ciudad }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Dirección</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.dir"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.dir"
+                                    >{{ form.errors.dir }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Teléfono/Celular</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.fono"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.fono"
+                                    >{{ form.errors.fono }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Correo</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.correo"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.correo"
+                                    >{{ form.errors.correo }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Web</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.web"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.web"
+                                    >{{ form.errors.web }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Actividad</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="form.actividad"
+                                />
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.actividad"
+                                    >{{ form.errors.actividad }}</span
+                                >
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="">Logo</label>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    @change="cargaArchivo($event, 'logo')"
+                                    ref="logo"
+                                />
+                                <div class="logo_muestra w-100 text-center">
+                                    <img
+                                        :src="form.url_logo"
+                                        alt=""
+                                        v-if="form.url_logo"
+                                    />
+                                </div>
+                                <span
+                                    class="text-danger"
+                                    v-if="form.errors?.logo"
+                                    >{{ form.errors.logo }}</span
+                                >
+                            </div>
                         </div>
-                        <span class="text-danger" v-if="form.errors?.logo">{{
-                            form.errors.logo
-                        }}</span>
                     </div>
-                </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">
-                    Guardar cambios
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 </template>
 <style scoped>

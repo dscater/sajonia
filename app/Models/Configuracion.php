@@ -10,24 +10,31 @@ class Configuracion extends Model
     use HasFactory;
 
     protected $fillable = [
-        "nombre",
-        "paterno",
-        "materno",
-        "ci",
-        "ci_exp",
+        "nombre_sistema",
+        "alias",
+        "razon_social",
+        "ciudad",
         "dir",
-        "email",
         "fono",
-        "password",
-        "tipo",
-        "foto",
-        "fecha_registro",
+        "correo",
+        "web",
+        "actividad",
+        "logo",
     ];
 
-    protected $appends = ["url_logo"];
+    protected $appends = ["url_logo", "logo_b64"];
 
     public function getUrlLogoAttribute()
     {
         return asset("imgs/" . $this->logo);
+    }
+
+    public function getLogoB64Attribute()
+    {
+        $path = public_path("imgs/" . $this->logo);
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        return $base64;
     }
 }

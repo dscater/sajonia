@@ -43,69 +43,22 @@ const { props } = usePage();
     </div>
     <div class="row">
         <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-blue">
-                <div class="stats-icon"><i class="fa fa-users"></i></div>
+        <div class="col-xl-3 col-md-6" v-for="item in array_infos">
+            <div class="widget widget-stats" :class="[item.color]">
+                <div class="stats-icon">
+                    <i class="fa" :class="[item.icon]"></i>
+                </div>
                 <div class="stats-info text-white">
-                    <h4>USUARIOS</h4>
-                    <p>0</p>
+                    <h4>{{ item.label }}</h4>
+                    <p>{{ item.cantidad }}</p>
                 </div>
                 <div class="stats-link">
-                    <a href="javascript:;"
+                    <Link :href="route(item.url)"
                         >Ver más <i class="fa fa-arrow-alt-circle-right"></i
-                    ></a>
+                    ></Link>
                 </div>
             </div>
         </div>
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-info">
-                <div class="stats-icon"><i class="fa fa-user-friends"></i></div>
-                <div class="stats-info text-white">
-                    <h4>CLIENTES</h4>
-                    <p>0</p>
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;"
-                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
-                    ></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-orange">
-                <div class="stats-icon"><i class="fa fa-clipboard-list"></i></div>
-                <div class="stats-info text-white">
-                    <h4>VENTA DE LOTES</h4>
-                    <p>0</p>
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;"
-                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
-                    ></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
-        <!-- BEGIN col-3 -->
-        <div class="col-xl-3 col-md-6">
-            <div class="widget widget-stats bg-red">
-                <div class="stats-icon"><i class="fa fa-list"></i></div>
-                <div class="stats-info text-white">
-                    <h4>LOTES</h4>
-                    <p>0</p>
-                </div>
-                <div class="stats-link">
-                    <a href="javascript:;"
-                        >Ver más <i class="fa fa-arrow-alt-circle-right"></i
-                    ></a>
-                </div>
-            </div>
-        </div>
-        <!-- END col-3 -->
     </div>
 </template>
 <style scoped>

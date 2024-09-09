@@ -6,10 +6,12 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\ManzanoController;
 use App\Http\Controllers\NotificacionUserController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ParametrizacionController;
 use App\Http\Controllers\PlanillaCuotaController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UrbanizacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
@@ -111,6 +113,8 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     );
 
     // VENTA LOTES
+    Route::get("venta_lotes/byCliente", [VentaLoteController::class, 'byCliente'])->name("venta_lotes.byCliente");
+    Route::get("venta_lotes/getCuota", [VentaLoteController::class, 'getCuota'])->name("venta_lotes.getCuota");
     Route::get("venta_lotes/api", [VentaLoteController::class, 'api'])->name("venta_lotes.api");
     Route::get("venta_lotes/paginado", [VentaLoteController::class, 'paginado'])->name("venta_lotes.paginado");
     Route::get("venta_lotes/listado", [VentaLoteController::class, 'listado'])->name("venta_lotes.listado");
@@ -126,6 +130,35 @@ Route::middleware('auth')->prefix("admin")->group(function () {
         ["index", "show"]
     );
 
+    // PAGOS
+    Route::get("pagos/pdf/{pago}", [PagoController::class, 'pdf'])->name("pagos.pdf");
+    Route::get("pagos/api", [PagoController::class, 'api'])->name("pagos.api");
+    Route::get("pagos/paginado", [PagoController::class, 'paginado'])->name("pagos.paginado");
+    Route::get("pagos/listado", [PagoController::class, 'listado'])->name("pagos.listado");
+    Route::resource("pagos", PagoController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
     // REPORTES
+    Route::get('reportes/usuarios', [ReporteController::class, 'usuarios'])->name("reportes.usuarios");
+    Route::get('reportes/r_usuarios', [ReporteController::class, 'r_usuarios'])->name("reportes.r_usuarios");
+
+    Route::get('reportes/lotes_terrenos', [ReporteController::class, 'lotes_terrenos'])->name("reportes.lotes_terrenos");
+    Route::get('reportes/r_lotes_terrenos', [ReporteController::class, 'r_lotes_terrenos'])->name("reportes.r_lotes_terrenos");
+
+    Route::get('reportes/clientes', [ReporteController::class, 'clientes'])->name("reportes.clientes");
+    Route::get('reportes/r_clientes', [ReporteController::class, 'r_clientes'])->name("reportes.r_clientes");
+
+    Route::get('reportes/planilla_pagos', [ReporteController::class, 'planilla_pagos'])->name("reportes.planilla_pagos");
+    Route::get('reportes/r_planilla_pagos', [ReporteController::class, 'r_planilla_pagos'])->name("reportes.r_planilla_pagos");
+    Route::get('reportes/planilla_venta', [ReporteController::class, 'planilla_venta'])->name("reportes.planilla_venta");
+
+    Route::get('reportes/g_lotes_terrenos', [ReporteController::class, 'g_lotes_terrenos'])->name("reportes.g_lotes_terrenos");
+    Route::get('reportes/r_g_lotes_terrenos', [ReporteController::class, 'r_g_lotes_terrenos'])->name("reportes.r_g_lotes_terrenos");
+    Route::get('reportes/r_pdf_lotes_terrenos', [ReporteController::class, 'r_pdf_lotes_terrenos'])->name("reportes.r_pdf_lotes_terrenos");
+
+    Route::get('reportes/g_venta_lotes', [ReporteController::class, 'g_venta_lotes'])->name("reportes.g_venta_lotes");
+    Route::get('reportes/r_g_venta_lotes', [ReporteController::class, 'r_g_venta_lotes'])->name("reportes.r_g_venta_lotes");
+    Route::get('reportes/r_pdf_venta_lotes', [ReporteController::class, 'r_pdf_venta_lotes'])->name("reportes.r_pdf_venta_lotes");
 });
 require __DIR__ . '/auth.php';

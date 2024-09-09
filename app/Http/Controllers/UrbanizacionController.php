@@ -93,7 +93,8 @@ class UrbanizacionController extends Controller
 
     public function show(Urbanizacion $urbanizacion)
     {
-        return response()->JSON($urbanizacion);
+        $urbanizacion = $urbanizacion->load(["manzanos.lotes"]);
+        return Inertia::render("Urbanizacions/Show", compact("urbanizacion"));
     }
 
     public function update(Urbanizacion $urbanizacion, Request $request)

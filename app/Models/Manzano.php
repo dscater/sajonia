@@ -28,4 +28,9 @@ class Manzano extends Model
     {
         return $this->belongsTo(Urbanizacion::class, 'urbanizacion_id');
     }
+
+    public function lotes()
+    {
+        return $this->hasMany(Lote::class, 'manzano_id');
+    }
 }

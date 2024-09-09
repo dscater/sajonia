@@ -396,12 +396,6 @@ const open_menus = () => {
 
 const submenus = {
     "reportes.usuarios": "Reportes",
-    "reportes.solicitud_mantenimiento": "Reportes",
-    "reportes.servicio": "Reportes",
-    "reportes.equipos": "Reportes",
-    "reportes.historial_mantenimientos": "Reportes",
-    "reportes.cantidad_mantenimiento_equipos": "Reportes",
-    "reportes.cantidad_mantenimiento_mes": "Reportes",
 };
 
 const route_current = ref("");
@@ -525,13 +519,22 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
-                    v-if="user_logeado.permisos.includes('notificacion_users.index')"
+                    v-if="
+                        user_logeado.permisos.includes(
+                            'notificacion_users.index'
+                        )
+                    "
                     class="menu-item"
                     :class="[
-                        route_current == 'notificacion_users.index' ? 'active' : '',
+                        route_current == 'notificacion_users.index'
+                            ? 'active'
+                            : '',
                     ]"
                 >
-                    <Link :href="route('notificacion_users.index')" class="menu-link">
+                    <Link
+                        :href="route('notificacion_users.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-bell"></i>
                         </div>
@@ -539,10 +542,11 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
+                    v-if="user_logeado.permisos.includes('pagos.index')"
                     class="menu-item"
                     :class="[route_current == 'pagos.index' ? 'active' : '']"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link :href="route('pagos.index')" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-money-bill"></i>
                         </div>
@@ -576,7 +580,9 @@ const logout = () => {
                     </Link>
                 </div>
                 <div
-                    v-if="user_logeado.permisos.includes('planilla_cuotas.index')"
+                    v-if="
+                        user_logeado.permisos.includes('planilla_cuotas.index')
+                    "
                     class="menu-item"
                     :class="[
                         route_current == 'planilla_cuotas.index'
@@ -584,7 +590,10 @@ const logout = () => {
                             : '',
                     ]"
                 >
-                    <Link :href="route('planilla_cuotas.index')" class="menu-link">
+                    <Link
+                        :href="route('planilla_cuotas.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-clipboard"></i>
                         </div>
@@ -644,7 +653,23 @@ const logout = () => {
                         <div class="menu-text">Usuarios</div>
                     </Link>
                 </div>
-                <div class="menu-item has-sub">
+                <div
+                    class="menu-item has-sub"
+                    v-if="
+                        user_logeado.permisos.includes('reportes.usuarios') ||
+                        user_logeado.permisos.includes(
+                            'reportes.lotes_terrenos'
+                        ) ||
+                        user_logeado.permisos.includes('reportes.clientes') ||
+                        user_logeado.permisos.includes(
+                            'reportes.planilla_pagos'
+                        ) ||
+                        user_logeado.permisos.includes(
+                            'reportes.g_lotes_terrenos'
+                        ) ||
+                        user_logeado.permisos.includes('reportes.g_venta_lotes')
+                    "
+                >
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-file-pdf"></i>
@@ -654,6 +679,11 @@ const logout = () => {
                     </a>
                     <div class="menu-submenu">
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.usuarios'
+                                )
+                            "
                             class="menu-item"
                             :class="[
                                 route_current == 'reportes.usuarios'
@@ -661,68 +691,113 @@ const logout = () => {
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.usuarios')"
+                                class="menu-link"
+                                ><div class="menu-text">Usuarios</div></Link
                             >
                         </div>
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.lotes_terrenos'
+                                )
+                            "
                             class="menu-item"
                             :class="[
-                                route_current == 'reportes.usuarios'
+                                route_current == 'reportes.lotes_terrenos'
                                     ? 'active'
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.lotes_terrenos')"
+                                class="menu-link"
+                                ><div class="menu-text">
+                                    Lotes de Terrenos
+                                </div></Link
                             >
                         </div>
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.clientes'
+                                )
+                            "
                             class="menu-item"
                             :class="[
-                                route_current == 'reportes.usuarios'
+                                route_current == 'reportes.clientes'
                                     ? 'active'
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.clientes')"
+                                class="menu-link"
+                                ><div class="menu-text">Clientes</div></Link
                             >
                         </div>
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.planilla_pagos'
+                                )
+                            "
                             class="menu-item"
                             :class="[
-                                route_current == 'reportes.usuarios'
+                                route_current == 'reportes.planilla_pagos'
                                     ? 'active'
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.planilla_pagos')"
+                                class="menu-link"
+                                ><div class="menu-text">
+                                    Planilla de Pagos
+                                </div></Link
                             >
                         </div>
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.g_lotes_terrenos'
+                                )
+                            "
                             class="menu-item"
                             :class="[
-                                route_current == 'reportes.usuarios'
+                                route_current == 'reportes.g_lotes_terrenos'
                                     ? 'active'
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.g_lotes_terrenos')"
+                                class="menu-link"
+                                ><div class="menu-text">
+                                    G. Lotes de Terrenos
+                                </div></Link
                             >
                         </div>
                         <div
+                            v-if="
+                                user_logeado.permisos.includes(
+                                    'reportes.g_venta_lotes'
+                                )
+                            "
                             class="menu-item"
                             :class="[
-                                route_current == 'reportes.usuarios'
+                                route_current == 'reportes.g_venta_lotes'
                                     ? 'active'
                                     : '',
                             ]"
                         >
-                            <a href="#" class="menu-link"
-                                ><div class="menu-text">Usuarios</div></a
+                            <Link
+                                :href="route('reportes.g_venta_lotes')"
+                                class="menu-link"
+                                ><div class="menu-text">
+                                    Venta de Terrenos
+                                </div></Link
                             >
                         </div>
                     </div>
@@ -733,7 +808,10 @@ const logout = () => {
                         route_current == 'configuracions.index' ? 'active' : '',
                     ]"
                 >
-                    <Link :href="route('usuarios.index')" class="menu-link">
+                    <Link
+                        :href="route('configuracions.index')"
+                        class="menu-link"
+                    >
                         <div class="menu-icon">
                             <i class="fa fa-cog"></i>
                         </div>

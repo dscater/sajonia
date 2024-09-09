@@ -21,4 +21,9 @@ class Urbanizacion extends Model
     {
         return date("d/m/Y", strtotime($this->fecha_registro));
     }
+
+    public function manzanos()
+    {
+        return $this->hasMany(Manzano::class, 'urbanizacion_id');
+    }
 }

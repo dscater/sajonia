@@ -114,15 +114,7 @@ onBeforeUnmount(() => {
             <div class="panel panel-inverse">
                 <!-- BEGIN panel-heading -->
                 <div class="panel-heading">
-                    <h4 class="panel-title btn-nuevo">
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="agregarRegistro"
-                        >
-                            <i class="fa fa-plus"></i> Nuevo
-                        </button>
-                    </h4>
+                    <h4 class="panel-title btn-nuevo">Notificaciones</h4>
                     <panel-toolbar
                         :mostrar_loading="loading"
                         @loading="updateDatatable"

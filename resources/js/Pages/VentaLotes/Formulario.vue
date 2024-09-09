@@ -50,9 +50,9 @@ watch(
                 .classList.add("modal-open");
             form = useForm(oVentaLote.value);
             if (form.id != 0) {
-                getManzanosIdUrbanizacion(form.urbanizacion_id);
-                getLotesIdManzano(form.manzano_id);
-                getLoteById(form.lote_id);
+                await getManzanosIdUrbanizacion(form.urbanizacion_id);
+                await getLotesIdManzano(form.manzano_id);
+                await getLoteById(form.lote_id);
             }
         }
     }
@@ -86,11 +86,18 @@ const getManzanos = (e) => {
 const getLotes = (e) => {
     let id = e.target.value;
     form.lote_id = "";
+    let params = {
+        id: id,
+        sin_venta: true,
+        data_id: null,
+    };
+    console.log(accion.value);
+    if (accion.value == 1) {
+        params["data_id"] = oVentaLote.value.lote_id;
+    }
     axios
         .get(route("lotes.listadoByManzano"), {
-            params: {
-                id: id,
-            },
+            params: params,
         })
         .then((response) => {
             listLotes.value = response.data.lotes;
@@ -120,11 +127,19 @@ const getManzanosIdUrbanizacion = (id) => {
 };
 
 const getLotesIdManzano = (id) => {
+    let params = {
+        id: id,
+        sin_venta: true,
+        data_id: null,
+    };
+    console.log("ASD");
+    console.log(oVentaLote.value.lote_id);
+    if (accion.value == 1) {
+        params["data_id"] = oVentaLote.value.lote_id;
+    }
     axios
         .get(route("lotes.listadoByManzano"), {
-            params: {
-                id: id,
-            },
+            params: params,
         })
         .then((response) => {
             listLotes.value = response.data.lotes;
@@ -140,7 +155,8 @@ const getLoteById = (id) => {
     }
 };
 
-const { flash } = usePage().props;
+const { flash, imprime_planilla } = usePage().props;
+// console.log(usePage().props);
 
 const tituloDialog = computed(() => {
     return accion.value == 0
@@ -157,8 +173,15 @@ const enviarFormulario = () => {
     form.post(url, {
         preserveScroll: true,
         forceFormData: true,
-        onSuccess: () => {
+        onSuccess: (res) => {
             dialog.value = false;
+            if (res.props.flash.planilla) {
+                const url = route("reportes.planilla_venta", {
+                    venta_lote_id: res.props.flash.planilla,
+                });
+                window.open(url, "_blank");
+            }
+
             Swal.fire({
                 icon: "success",
                 title: "Correcto",

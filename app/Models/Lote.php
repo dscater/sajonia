@@ -23,6 +23,7 @@ class Lote extends Model
         "costo_contado",
         "costo_credito",
         "fecha_registro",
+        "vendido"
     ];
 
     protected $appends = ["fecha_registro_t"];
