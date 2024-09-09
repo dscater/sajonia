@@ -150,7 +150,7 @@ class Notificacion extends Model
                     ->get()->first();
                 if (!$notificacion) {
                     $notificacion = Notificacion::create([
-                        "tipo_notificacion" => "PAGO SIN REALIZAR",
+                        "tipo_notificacion" => "PAGO SIN REALIZAR 90",
                         "descripcion" => "SE NOTIFICA QUE EL CLIENTE " . $item->cliente->user->full_name . " CON C.I. " . $item->cliente->user->full_ci . " EXCEDIÓ LOS 90 DÍAS SIN PAGAR LA CUOTA RESPECTIVA DE SU LOTE DE TERRENO",
                         "fecha" => $fecha_actual,
                         "hora" => date("H:i:s"),

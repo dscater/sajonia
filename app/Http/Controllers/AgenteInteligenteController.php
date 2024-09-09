@@ -11,19 +11,21 @@ class AgenteInteligenteController extends Controller
         // Array para almacenar las notificaciones
         $notificaciones = array();
 
-        // Generar notificaciones para cada estudiante inscrito
-        $avance_obras = $this->detectarEventos();
+        // Generar notificaciones para cada tipo de registro
+        $notificiones = $this->detectarEventos();
 
-        if (!empty($avance_obras)) {
-            foreach ($avance_obras as $avance_obra) {
+        if (!empty($notificiones)) {
+            foreach ($notificiones as $notificacion) {
                 // inicializar la notificacion
                 $notificacion_generada = Notificacion::create([
-                    "registro_id" => $avance_obra->id,
-                    "modelo" => "AvanceObra",
-                    "descripcion" => $avance_obra->descripcion,
+                    "tipo_notificacion" => $notificacion->tipo_notificacion,
+                    "descripcion" => $notificacion->descripcion,
+                    "registro_id" => $notificacion->id,
+                    "fecha" => $notificacion->fecha,
+                    "hora" => $notificacion->hora,
                 ]);
 
-                $notificacion = $this->generarNotificacion($avance_obra, $notificacion_generada);
+                $notificacion = $this->generarNotificacion($notificacion_generada);
                 if ($notificacion) {
                     $notificaciones[] = $notificacion;
                 }
@@ -32,47 +34,89 @@ class AgenteInteligenteController extends Controller
         return $notificaciones;
     }
 
-    // Obtener eventos/avance_obras
+    // Obtener eventos/notificiones
     private function detectarEventos()
     {
         // segun la fecha actual
         $fecha_actual = date("Y-m-d");
 
-        $avance_obras = AvanceObra::where("fecha_registro", $fecha_actual);
 
-        if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-            // filtrar por usuario logeado
-            $avance_obras = $avance_obras->where("gerente_regional_id", Auth::user()->id);
+        $notificaciones = [];
+
+        // buscar en las planillas
+        $fecha_pago = date("Y-m-d", strtotime($fecha_actual . '+5 days'));
+        // pagos proximos
+        $venta_planillas = VentaPlanilla::where("estado", 0)->where("fecha_pago", $fecha_pago)->get();
+        if (count($venta_planillas) > 0) {
+
+            foreach ($venta_planillas as $item) {
+                $notificaciones[] = [
+                    "tipo_notificacion" => "PAGO CUOTA",
+                    "descripcion" => "LE COMUNICAMOS QUE DEBE PAGAR SU CUOTA RESPECTIVA YA QUE ESTÁ A PUNTO DE TERMINAR EL MES",
+                    "fecha" => $fecha_actual,
+                    "hora" => date("H:i:s"),
+                    "registro_id" => $item->id
+                ];
+            }
         }
 
-        if (Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            // filtrar por usuario logeado
-            $avance_obras = $avance_obras->where("encargado_obra_id", Auth::user()->id);
+        // pagos sin realizar
+        $venta_planillas = VentaPlanilla::where("estado", 0)->where("fecha_pago", "<", $fecha_actual)->get();
+        if (count($venta_planillas) > 0) {
+            foreach ($venta_planillas as $item) {
+                $notificaciones[] = [
+                    "tipo_notificacion" => "PAGO SIN REALIZAR",
+                    "descripcion" => "SE NOTIFICA QUE EL CLIENTE " . $item->cliente->user->full_name . " CON C.I. " . $item->cliente->user->full_ci . " NO PAGO SU CUOTA RESPECTIVA DEL MES " . $array_meses[date("m", strtotime($item->fecha_pago))],
+                    "fecha" => $fecha_actual,
+                    "hora" => date("H:i:s"),
+                    "registro_id" => $item->id
+                ];
+            }
         }
 
-        $avance_obras = $avance_obras->get();
+        // exedio 90 dias
+        $fecha_anterior = date("Y-m-d", strtotime($fecha_actual . '-90 days'));
+        $venta_planillas = VentaPlanilla::where("estado", 0)->where("fecha_pago", "<=", $fecha_anterior)->get();
+        if (count($venta_planillas) > 0) {
+            foreach ($venta_planillas as $item) {
+                $notificaciones[] = [
+                    "tipo_notificacion" => "PAGO SIN REALIZAR 90",
+                    "descripcion" => "SE NOTIFICA QUE EL CLIENTE " . $item->cliente->user->full_name . " CON C.I. " . $item->cliente->user->full_ci . " EXCEDIÓ LOS 90 DÍAS SIN PAGAR LA CUOTA RESPECTIVA DE SU LOTE DE TERRENO",
+                    "fecha" => $fecha_actual,
+                    "hora" => date("H:i:s"),
+                    "registro_id" => $item->id
+                ];
+            }
+        }
 
-        return $avance_obras;
+        // meses de dispensa
+        $clientes = Cliente::where("fechan", $fecha_actual)->get();
+        if (count($clientes) > 0) {
+            foreach ($clientes as $item) {
+                $notificaciones[] = [
+                    "tipo_notificacion" => "DISPENSA",
+                    "descripcion" => "SE NOTIFICA QUE EL CLIENTE " . $item->user->full_name . " CON C.I. " . $item->user->full_ci . " YA CUMPLIÓ LOS 6 MESES DE DISPENSA",
+                    "fecha" => $fecha_actual,
+                    "hora" => date("H:i:s"),
+                    "registro_id" => $item->id
+                ];
+            }
+        }
+
+        return $notificaciones;
     }
 
     // Generar una notificación para un evento dado
-    private function generarNotificacion(AvanceObra $avance_obra, Notificacion $notificacion)
+    private function generarNotificacion($notificacion)
     {
         // obtener los usuarios que recibiran la notificación
-        $usuarios = User::whereIn("tipo", ["GERENTE GENERAL"])->get();
+        $usuarios = User::whereIn("tipo")->get();
         foreach ($usuarios as $item) {
             $notificacion->notificacion_users()->create([
                 "user_id" => $item->id,
                 "visto" => 0,
             ]);
         }
-        // usuario gerente regional de la obra
-        $gerente_regional = $avance_obra->obra->gerente_regional;
-        $notificacion->notificacion_users()->create([
-            "user_id" => $gerente_regional->id,
-            "visto" => 0,
-        ]);
-
         return $notificacion;
     }
 }
