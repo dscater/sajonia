@@ -33,6 +33,9 @@ const getVentaLotes = (e) => {
                 },
             })
             .then((response) => {
+                form.nro_cuotas = 0;
+                form.cuota = "";
+                form.total_cuota = "";
                 listVentaLotes.value = response.data.data;
             });
     }
@@ -50,7 +53,9 @@ const getCuota = (e) => {
                 },
             })
             .then((response) => {
+                form.nro_cuotas = response.data.nro_cuotas;
                 form.cuota = response.data.cuota;
+                calculaTotal();
                 correcto.value = response.data.correcto;
             });
     }
@@ -191,7 +196,7 @@ const cerrarDialog = () => {
                                         v-for="item in listClientes"
                                         :value="item.id"
                                     >
-                                        {{ item.user.nombre }}
+                                        {{ item.user.full_name }}
                                     </option>
                                 </select>
                                 <ul

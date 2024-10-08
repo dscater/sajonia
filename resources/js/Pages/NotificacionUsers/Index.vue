@@ -60,7 +60,7 @@ const columns = [
         },
     },
 ];
-const loading = ref(true);
+const loading = ref(false);
 
 const accionesRow = () => {
     // editar

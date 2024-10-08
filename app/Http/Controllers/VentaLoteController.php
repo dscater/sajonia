@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HistorialAccion;
 use App\Models\Pago;
 use App\Models\VentaLote;
+use App\Models\VentaPlanilla;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,12 +83,18 @@ class VentaLoteController extends Controller
         $venta_lote = VentaLote::find($request->id);
 
         if ($venta_lote && count($venta_lote->venta_planillas) > 0) {
+
+            $nro_cuotas = VentaPlanilla::where("venta_lote_id", $venta_lote->id)
+                ->where("estado", 0)
+                ->count();
             return response()->JSON([
+                "nro_cuotas" => $nro_cuotas,
                 "cuota" => $venta_lote->venta_planillas[0]->cuota,
                 "correcto" => true
             ]);
         }
         return response()->JSON([
+            "nro_cuotas" => 0,
             "cuota" => 0,
             "resante" => $venta_lote->restante,
             "correcto" => false
@@ -140,6 +147,9 @@ class VentaLoteController extends Controller
                 // generar planilla
                 $fecha_ini = date("Y-m-d", strtotime($nueva_venta_lote->fecha_formalizacion));
                 // plazo lote
+                if (!$nueva_venta_lote->lote->planilla_cuota) {
+                    throw new Exception("No es posible realizar la venta a CRÉDITO debido a que no se registro la Planilla de cuotas del lote seleccionado.");
+                }
                 $plazo = $nueva_venta_lote->lote->planilla_cuota->plazo;
                 $total_venta = $nueva_venta_lote->lote->costo_credito;
                 $cuota = $total_venta / $plazo;
@@ -219,6 +229,9 @@ class VentaLoteController extends Controller
                         // generar planilla
                         $fecha_ini = date("Y-m-d", strtotime($venta_lote->fecha_formalizacion));
                         // plazo lote
+                        if (!$venta_lote->lote->planilla_cuota) {
+                            throw new Exception("No es posible realizar la venta a CRÉDITO debido a que no se registro la Planilla de cuotas del lote seleccionado.");
+                        }
                         $plazo = $venta_lote->lote->planilla_cuota->plazo;
                         $total_venta = $venta_lote->lote->costo_credito;
                         $cuota = $total_venta / $plazo;

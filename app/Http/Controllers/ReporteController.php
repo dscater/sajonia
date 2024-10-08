@@ -150,7 +150,7 @@ class ReporteController extends Controller
         $clientes->where("id", $venta_lote->cliente_id);
         $clientes = $clientes->get();
 
-        $pdf = PDF::loadView('reportes.planilla_pagos', compact('clientes'))->setPaper('letter', 'portrait');
+        $pdf = PDF::loadView('reportes.planilla_pagos', compact('clientes', 'venta_lote_id'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();

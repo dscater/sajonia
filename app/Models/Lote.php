@@ -48,4 +48,9 @@ class Lote extends Model
     {
         return $this->hasOne(PlanillaCuota::class, 'lote_id');
     }
+
+    public function venta_lote()
+    {
+        return $this->hasOne(VentaLote::class, 'lote_id');
+    }
 }

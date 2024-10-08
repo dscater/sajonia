@@ -73,6 +73,7 @@ Route::middleware('auth')->prefix("admin")->group(function () {
     Route::get("urbanizacions/api", [UrbanizacionController::class, 'api'])->name("urbanizacions.api");
     Route::get("urbanizacions/paginado", [UrbanizacionController::class, 'paginado'])->name("urbanizacions.paginado");
     Route::get("urbanizacions/listado", [UrbanizacionController::class, 'listado'])->name("urbanizacions.listado");
+    Route::get("urbanizacions/info/{urbanizacion}", [UrbanizacionController::class, 'info'])->name("urbanizacions.info");
     Route::resource("urbanizacions", UrbanizacionController::class)->only(
         ["index", "store", "update", "show", "destroy"]
     );

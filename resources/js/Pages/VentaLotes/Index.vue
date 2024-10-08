@@ -25,7 +25,6 @@ import PanelToolbar from "@/Components/PanelToolbar.vue";
 import Formulario from "./Formulario.vue";
 // const { mobile, identificaDispositivo } = useMenu();
 const { props } = usePage();
-console.log(props);
 const { setLoading } = useApp();
 onMounted(() => {
     setTimeout(() => {
@@ -120,7 +119,7 @@ const columns = [
         },
     },
 ];
-const loading = ref(true);
+const loading = ref(false);
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
@@ -183,7 +182,7 @@ const updateDatatable = () => {
 
 onMounted(async () => {
     if (props.planilla) {
-        const url = route("reportes.r_planilla_pagos", {
+        const url = route("reportes.planilla_venta", {
             venta_lote_id: props.planilla,
         });
         window.open(url, "_blank");

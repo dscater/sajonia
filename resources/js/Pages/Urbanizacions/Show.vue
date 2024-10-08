@@ -16,7 +16,7 @@ const breadbrums = [
 </script>
 <script setup>
 import { useApp } from "@/composables/useApp";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { initDataTable } from "@/composables/datatable.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import PanelToolbar from "@/Components/PanelToolbar.vue";
@@ -26,6 +26,8 @@ const props = defineProps({
         default: null,
     },
 });
+const { props: props_page } = usePage();
+const url_assets = props_page.url_assets;
 const { setLoading } = useApp();
 onMounted(() => {
     setTimeout(() => {
@@ -77,18 +79,29 @@ onMounted(async () => {});
                                     :class="{ vendido: lote.vendido == 1 }"
                                     v-for="lote in manzano.lotes"
                                 >
-                                    <div class="cont_lote">
-                                        {{ lote.nombre }}
+                                    <div
+                                        class="cont_lote"
+                                        :style="{
+                                            backgroundImage:
+                                                'url(' +
+                                                url_assets +
+                                                '/imgs/fondoterreno.jpg)',
+                                            backgroundSize: '100% 100%',
+                                        }"
+                                    >
+                                        <span class="nom_lote">{{
+                                            lote.nombre
+                                        }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-2">
                         <div class="col-md-3">
                             <Link
                                 :href="route('urbanizacions.index')"
-                                class="btn btn-secondary"
+                                class="btn btn-secondary w-100"
                                 ><i class="fa fa-arrow-left"></i> Volver</Link
                             >
                         </div>
@@ -107,7 +120,7 @@ onMounted(async () => {});
     width: 100%;
     margin-top: 20px;
     text-align: center;
-    color:white;
+    color: white;
     padding: 15px;
     background-color: black;
 }
@@ -122,7 +135,20 @@ onMounted(async () => {});
     background-color: #06bb7f;
 }
 
+
+.contenedor_manzanos .lote .cont_lote .nom_lote {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(4, 150, 11, 0.712);
+    text-align: center;
+}
+
+
 .contenedor_manzanos .lote.vendido .cont_lote {
-    background-color: #e44a36;
+    background-color: transparent;
+}
+.contenedor_manzanos .lote.vendido .cont_lote .nom_lote {
+    background-color: rgba(231, 14, 14, 0.76);
 }
 </style>

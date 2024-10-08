@@ -70,22 +70,26 @@ const columns = [
         title: "ACCIONES",
         data: null,
         render: function (data, type, row) {
-            return `
-                <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
-                    row.id
-                }"><i class="fa fa-edit"></i></button>
+            let buttons = ` <button class="mx-0 rounded-0 btn btn-warning editar" data-id="${
+                row.id
+            }"><i class="fa fa-edit"></i></button>
                 <button class="mx-0 rounded-0 btn btn-danger eliminar"
                  data-id="${row.id}" 
                  data-nombre="${row.lote.nombre}" 
                  data-url="${route(
                      "planilla_cuotas.destroy",
                      row.id
-                 )}"><i class="fa fa-trash"></i></button>
-            `;
+                 )}"><i class="fa fa-trash"></i></button>`;
+
+            if (row.lote.venta_lote) {
+                buttons += `<button class="mx-0 rounded-0 btn btn-primary planilla" data-id="${row.lote.venta_lote.id}"><i class="fa fa-file-pdf"></i></button>`;
+            }
+
+            return buttons;
         },
     },
 ];
-const loading = ref(true);
+const loading = ref(false);
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
@@ -96,6 +100,15 @@ const agregarRegistro = () => {
 };
 
 const accionesRow = () => {
+    // planilla
+    $("#table-planilla_cuota").on("click", "button.planilla", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        const url = route("reportes.planilla_venta", {
+            venta_lote_id: id,
+        });
+        window.open(url, "_blank");
+    });
     // editar
     $("#table-planilla_cuota").on("click", "button.editar", function (e) {
         e.preventDefault();

@@ -77,7 +77,7 @@ const columns = [
         },
     },
 ];
-const loading = ref(true);
+const loading = ref(false);
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
@@ -98,7 +98,7 @@ const accionesRow = () => {
     $("#table-urbanizacion").on("click", "button.editar", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        axios.get(route("urbanizacions.show", id)).then((response) => {
+        axios.get(route("urbanizacions.info", id)).then((response) => {
             setUrbanizacion(response.data);
             accion_dialog.value = 1;
             open_dialog.value = true;

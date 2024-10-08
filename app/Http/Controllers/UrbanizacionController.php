@@ -91,6 +91,12 @@ class UrbanizacionController extends Controller
         }
     }
 
+    public function info(Urbanizacion $urbanizacion)
+    {
+        $urbanizacion = $urbanizacion->load(["manzanos.lotes"]);
+        return response()->JSON($urbanizacion);
+    }
+
     public function show(Urbanizacion $urbanizacion)
     {
         $urbanizacion = $urbanizacion->load(["manzanos.lotes"]);

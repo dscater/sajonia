@@ -384,14 +384,16 @@ function handleGetHiddenMenuHeight(elm) {
 }
 
 const open_menus = () => {
-    $(".has-sub").on("click", function () {
-        $(this).toggleClass("expand");
-        if ($(this).hasClass("expand")) {
-            $(this).children(".menu-submenu").css("display", "block");
-        } else {
-            $(this).children(".menu-submenu").css("display", "none");
-        }
-    });
+    $(".has-sub")
+        .off("click")
+        .on("click", function () {
+            $(this).toggleClass("expand");
+            if ($(this).hasClass("expand")) {
+                $(this).children(".menu-submenu").css("display", "block");
+            } else {
+                $(this).children(".menu-submenu").css("display", "none");
+            }
+        });
 };
 
 const submenus = {
@@ -422,13 +424,11 @@ onMounted(() => {
         user_logeado.value = props_page.auth?.user;
     }
 
-    open_menus();
-
-    handleSidebarMinifyFloatMenu();
-
     setTimeout(() => {
+        open_menus();
+        handleSidebarMinifyFloatMenu();
         scrollActive();
-    }, 300);
+    }, 400);
 });
 
 const scrollActive = () => {

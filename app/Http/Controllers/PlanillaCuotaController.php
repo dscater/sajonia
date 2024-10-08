@@ -39,7 +39,7 @@ class PlanillaCuotaController extends Controller
     public function api(Request $request)
     {
         // Log::debug($request);
-        $planilla_cuotas = PlanillaCuota::with(["lote.urbanizacion", "lote.manzano"])->select("planilla_cuotas.*");
+        $planilla_cuotas = PlanillaCuota::with(["lote.urbanizacion", "lote.manzano", "lote.venta_lote"])->select("planilla_cuotas.*");
         $planilla_cuotas = $planilla_cuotas->get();
         return response()->JSON([
             "data" => $planilla_cuotas

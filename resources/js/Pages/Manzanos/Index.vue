@@ -78,7 +78,7 @@ const columns = [
         },
     },
 ];
-const loading = ref(true);
+const loading = ref(false);
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
 
