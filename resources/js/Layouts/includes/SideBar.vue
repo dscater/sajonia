@@ -35,7 +35,7 @@ const open_menu_mobile = (e) => {
 
 function appSidebarProfileToggle(e) {
     var targetSidebar = document.querySelector(
-        ".app-sidebar:not(.app-sidebar-end)"
+        ".app-sidebar:not(.app-sidebar-end)",
     );
     var targetMenu = e.target.closest(".menu-profile");
     var targetProfile = document.querySelector("#appSidebarProfileMenu");
@@ -61,8 +61,8 @@ var appSidebarFloatSubmenuDom = "";
 function handleSidebarMinifyFloatMenu() {
     var elms = [].slice.call(
         document.querySelectorAll(
-            ".app-sidebar .menu > .menu-item.has-sub > .menu-link"
-        )
+            ".app-sidebar .menu > .menu-item.has-sub > .menu-link",
+        ),
     );
     if (elms) {
         elms.map(function (elm) {
@@ -75,7 +75,7 @@ function handleSidebarMinifyFloatMenu() {
                     clearTimeout(appSidebarFloatSubmenuTimeout);
                     var targetMenu =
                         this.closest(".menu-item").querySelector(
-                            ".menu-submenu"
+                            ".menu-submenu",
                         );
                     if (
                         appSidebarFloatSubmenuDom == this &&
@@ -119,7 +119,7 @@ function handleSidebarMinifyFloatMenu() {
 
                         if (
                             !document.querySelector(
-                                "#app-sidebar-float-submenu"
+                                "#app-sidebar-float-submenu",
                             )
                         ) {
                             var overflowClass = "";
@@ -132,16 +132,16 @@ function handleSidebarMinifyFloatMenu() {
                             }
                             html.setAttribute(
                                 "id",
-                                "app-sidebar-float-submenu"
+                                "app-sidebar-float-submenu",
                             );
                             html.setAttribute(
                                 "class",
-                                "app-sidebar-float-submenu-container"
+                                "app-sidebar-float-submenu-container",
                             );
                             html.setAttribute("data-offset-top", targetTop);
                             html.setAttribute(
                                 "data-menu-offset-top",
-                                targetTop
+                                targetTop,
                             );
                             html.innerHTML =
                                 "" +
@@ -155,7 +155,7 @@ function handleSidebarMinifyFloatMenu() {
                             appElm.appendChild(html);
 
                             var elm = document.getElementById(
-                                "app-sidebar-float-submenu"
+                                "app-sidebar-float-submenu",
                             );
                             elm.onmouseover = function () {
                                 clearTimeout(appSidebarFloatSubmenuTimeout);
@@ -165,20 +165,20 @@ function handleSidebarMinifyFloatMenu() {
                                     () => {
                                         document
                                             .querySelector(
-                                                "#app-sidebar-float-submenu"
+                                                "#app-sidebar-float-submenu",
                                             )
                                             .remove();
                                     },
-                                    250
+                                    250,
                                 );
                             };
                         } else {
                             var floatSubmenu = document.querySelector(
-                                "#app-sidebar-float-submenu"
+                                "#app-sidebar-float-submenu",
                             );
                             var floatSubmenuElm = document.querySelector(
                                 "#app-sidebar-float-submenu" +
-                                    " .app-sidebar-float-submenu"
+                                    " .app-sidebar-float-submenu",
                             );
 
                             if (targetHeight > windowHeight) {
@@ -191,33 +191,33 @@ function handleSidebarMinifyFloatMenu() {
                                         i++
                                     ) {
                                         floatSubmenuElm.classList.add(
-                                            splitClass[i]
+                                            splitClass[i],
                                         );
                                     }
                                 }
                             }
                             floatSubmenu.setAttribute(
                                 "data-offset-top",
-                                targetTop
+                                targetTop,
                             );
                             floatSubmenu.setAttribute(
                                 "data-menu-offset-top",
-                                targetTop
+                                targetTop,
                             );
                             floatSubmenuElm.innerHTML = targetMenuHtml;
                         }
 
                         var targetHeight = document.querySelector(
-                            "#app-sidebar-float-submenu"
+                            "#app-sidebar-float-submenu",
                         ).clientHeight;
                         var floatSubmenuElm = document.querySelector(
-                            "#app-sidebar-float-submenu"
+                            "#app-sidebar-float-submenu",
                         );
                         var floatSubmenuArrowElm = document.querySelector(
-                            "#app-sidebar-float-submenu-arrow"
+                            "#app-sidebar-float-submenu-arrow",
                         );
                         var floatSubmenuLineElm = document.querySelector(
-                            "#app-sidebar-float-submenu-line"
+                            "#app-sidebar-float-submenu-line",
                         );
                         if (windowHeight - targetTop > targetHeight) {
                             if (floatSubmenuElm) {
@@ -269,7 +269,7 @@ function handleSidebarMinifyFloatMenu() {
                 if (elm && elm.classList.contains("app-sidebar-minified")) {
                     appSidebarFloatSubmenuTimeout = setTimeout(() => {
                         var elm = document.querySelector(
-                            "#app-sidebar-float-submenu-line"
+                            "#app-sidebar-float-submenu-line",
                         );
                         if (elm) {
                             elm.remove();
@@ -285,8 +285,8 @@ function handleSidebarMinifyFloatMenu() {
 function handleSidebarMinifyFloatMenuClick() {
     var elms = [].slice.call(
         document.querySelectorAll(
-            "#app-sidebar-float-submenu .menu-item.has-sub > .menu-link"
-        )
+            "#app-sidebar-float-submenu .menu-item.has-sub > .menu-link",
+        ),
     );
     if (elms) {
         elms.map(function (elm) {
@@ -308,20 +308,20 @@ function handleSidebarMinifyFloatMenuClick() {
 
                 var loopHeight = setInterval(function () {
                     var targetMenu = document.querySelector(
-                        "#app-sidebar-float-submenu"
+                        "#app-sidebar-float-submenu",
                     );
                     var targetMenuArrow = document.querySelector(
-                        "#app-sidebar-float-submenu-arrow"
+                        "#app-sidebar-float-submenu-arrow",
                     );
                     var targetMenuLine = document.querySelector(
-                        "#app-sidebar-float-submenu-line"
+                        "#app-sidebar-float-submenu-line",
                     );
                     var targetHeight = targetMenu.clientHeight;
                     var targetOffset = targetMenu.getBoundingClientRect();
                     var targetOriTop =
                         targetMenu.getAttribute("data-offset-top");
                     var targetMenuTop = targetMenu.getAttribute(
-                        "data-menu-offset-top"
+                        "data-menu-offset-top",
                     );
                     var targetTop = targetOffset.top;
                     var windowHeight = document.body.clientHeight;
@@ -350,7 +350,7 @@ function handleSidebarMinifyFloatMenuClick() {
                             targetMenuLine.style.bottom = arrowBottom + "px";
                         }
                         var floatSubmenuElm = document.querySelector(
-                            "#app-sidebar-float-submenu .app-sidebar-float-submenu"
+                            "#app-sidebar-float-submenu .app-sidebar-float-submenu",
                         );
                         if (targetHeight > windowHeight) {
                             if (floatSubmenuElm) {
@@ -358,7 +358,7 @@ function handleSidebarMinifyFloatMenuClick() {
                                     "overflow-scroll mh-100vh".split(" ");
                                 for (var i = 0; i < splitClass.length; i++) {
                                     floatSubmenuElm.classList.add(
-                                        splitClass[i]
+                                        splitClass[i],
                                     );
                                 }
                             }
@@ -376,7 +376,7 @@ function handleSidebarMinifyFloatMenuClick() {
 function handleGetHiddenMenuHeight(elm) {
     elm.setAttribute(
         "style",
-        "position: absolute; visibility: hidden; display: block !important"
+        "position: absolute; visibility: hidden; display: block !important",
     );
     var targetHeight = elm.clientHeight;
     elm.removeAttribute("style");
@@ -521,7 +521,7 @@ const logout = () => {
                 <div
                     v-if="
                         user_logeado.permisos.includes(
-                            'notificacion_users.index'
+                            'notificacion_users.index',
                         )
                     "
                     class="menu-item"
@@ -658,14 +658,14 @@ const logout = () => {
                     v-if="
                         user_logeado.permisos.includes('reportes.usuarios') ||
                         user_logeado.permisos.includes(
-                            'reportes.lotes_terrenos'
+                            'reportes.lotes_terrenos',
                         ) ||
                         user_logeado.permisos.includes('reportes.clientes') ||
                         user_logeado.permisos.includes(
-                            'reportes.planilla_pagos'
+                            'reportes.planilla_pagos',
                         ) ||
                         user_logeado.permisos.includes(
-                            'reportes.g_lotes_terrenos'
+                            'reportes.g_lotes_terrenos',
                         ) ||
                         user_logeado.permisos.includes('reportes.g_venta_lotes')
                     "
@@ -681,7 +681,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.usuarios'
+                                    'reportes.usuarios',
                                 )
                             "
                             class="menu-item"
@@ -700,7 +700,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.lotes_terrenos'
+                                    'reportes.lotes_terrenos',
                                 )
                             "
                             class="menu-item"
@@ -721,7 +721,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.clientes'
+                                    'reportes.clientes',
                                 )
                             "
                             class="menu-item"
@@ -740,7 +740,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.planilla_pagos'
+                                    'reportes.planilla_pagos',
                                 )
                             "
                             class="menu-item"
@@ -761,7 +761,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.g_lotes_terrenos'
+                                    'reportes.g_lotes_terrenos',
                                 )
                             "
                             class="menu-item"
@@ -782,7 +782,7 @@ const logout = () => {
                         <div
                             v-if="
                                 user_logeado.permisos.includes(
-                                    'reportes.g_venta_lotes'
+                                    'reportes.g_venta_lotes',
                                 )
                             "
                             class="menu-item"
@@ -807,6 +807,9 @@ const logout = () => {
                     :class="[
                         route_current == 'configuracions.index' ? 'active' : '',
                     ]"
+                    v-if="
+                        user_logeado.permisos.includes('configuracions.index')
+                    "
                 >
                     <Link
                         :href="route('configuracions.index')"

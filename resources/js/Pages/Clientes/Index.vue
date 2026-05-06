@@ -68,17 +68,17 @@ const columns = [
         title: "ESTADO DEL CLIENTE",
         data: "cliente.estado_cliente",
     },
-    {
-        title: "ACCESO",
-        data: "acceso",
-        render: function (data, type, row) {
-            if (data == 1) {
-                return `<span class="badge bg-success">HABILITADO</span>`;
-            } else {
-                return `<span class="badge bg-danger">DESHABILITADO</span>`;
-            }
-        },
-    },
+    // {
+    //     title: "ACCESO",
+    //     data: "acceso",
+    //     render: function (data, type, row) {
+    //         if (data == 1) {
+    //             return `<span class="badge bg-success">HABILITADO</span>`;
+    //         } else {
+    //             return `<span class="badge bg-danger">DESHABILITADO</span>`;
+    //         }
+    //     },
+    // },
     {
         title: "FECHA DE REGISTRO",
         data: "fecha_registro_t",
@@ -102,7 +102,7 @@ const columns = [
                  data-nombre="${row.full_name}" 
                  data-url="${route(
                      "clientes.destroy",
-                     row.id
+                     row.id,
                  )}"><i class="fa fa-trash"></i></button>
             `;
         },
@@ -193,7 +193,18 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
-    datatable = initDataTable("#table-cliente", columns, route("clientes.api"));
+    datatable = initDataTable(
+        "#table-cliente",
+        columns,
+        route("clientes.api"),
+        {
+            createdRow: function (row, data) {
+                if (data.cliente.estado_cliente === "DISPENSA") {
+                    $(row).addClass("bg-primary");
+                }
+            },
+        },
+    );
     datatableInitialized.value = true;
     accionesRow();
 });
@@ -245,7 +256,7 @@ onBeforeUnmount(() => {
                     <table
                         id="table-cliente"
                         width="100%"
-                        class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
+                        class="table table-bordered align-middle text-nowrap tabla_datos"
                     >
                         <thead></thead>
                         <tbody></tbody>

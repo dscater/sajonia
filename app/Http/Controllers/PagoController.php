@@ -103,7 +103,7 @@ class PagoController extends Controller
             }
 
             if ($nuevo_pago->venta_lote->restante == 0) {
-                $nuevo_pago->venta_lote->estado = "CANCELADO";
+                $nuevo_pago->venta_lote->estado_pago = "CANCELADO";
                 $nuevo_pago->venta_lote->save();
             }
 

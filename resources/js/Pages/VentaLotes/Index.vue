@@ -106,7 +106,7 @@ const columns = [
                  data-nombre="${row.cliente.user.full_name}" 
                  data-url="${route(
                      "venta_lotes.destroy",
-                     row.id
+                     row.id,
                  )}"><i class="fa fa-trash"></i></button>`;
 
             if (!props.auth.user.permisos.includes("venta_lotes.edit")) {
@@ -191,7 +191,26 @@ onMounted(async () => {
     datatable = initDataTable(
         "#table-venta_lote",
         columns,
-        route("venta_lotes.api")
+        route("venta_lotes.api"),
+        {
+            createdRow: function (row, data) {
+                // $(row).addClass("bg-success");
+                if (
+                    data.cliente &&
+                    data.cliente.estado_cliente === "DISPENSA"
+                ) {
+                    $(row).addClass("bg-orange");
+                } else if (data.cliente && data.pagos_retrasados) {
+                    $(row).addClass("bg-danger");
+                } else if (data.titulacion == "FINALIZADO") {
+                    $(row).addClass("bg-brown");
+                } else if (data.titulacion == "EN PROCESO") {
+                    $(row).addClass("bg-cyan");
+                } else if (!data.pagos_retrasados && data.ultimo_pago_vigente) {
+                    $(row).addClass("bg-primary");
+                }
+            },
+        },
     );
     datatableInitialized.value = true;
     accionesRow();
@@ -228,7 +247,7 @@ onBeforeUnmount(() => {
                         class="panel-title btn-nuevo"
                         v-if="
                             props.auth.user.permisos.includes(
-                                'venta_lotes.create'
+                                'venta_lotes.create',
                             )
                         "
                     >
@@ -251,7 +270,7 @@ onBeforeUnmount(() => {
                     <table
                         id="table-venta_lote"
                         width="100%"
-                        class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
+                        class="table table-bordered align-middle text-nowrap tabla_datos"
                     >
                         <thead></thead>
                         <tbody></tbody>

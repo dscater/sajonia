@@ -23,6 +23,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import PanelToolbar from "@/Components/PanelToolbar.vue";
 // import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
+import Clientes from "../Reportes/Clientes.vue";
 // const { mobile, identificaDispositivo } = useMenu();
 const { setLoading } = useApp();
 onMounted(() => {
@@ -31,12 +32,7 @@ onMounted(() => {
     }, 300);
 });
 
-const {
-    getLotes,
-    setLote,
-    limpiarLote,
-    deleteLote,
-} = useLotes();
+const { getLotes, setLote, limpiarLote, deleteLote } = useLotes();
 
 const columns = [
     {
@@ -104,11 +100,11 @@ const columns = [
                     row.id
                 }"><i class="fa fa-edit"></i></button>
                 <button class="mx-0 rounded-0 btn btn-danger eliminar"
-                 data-id="${row.id}" 
-                 data-nombre="${row.nombre}" 
+                 data-id="${row.id}"
+                 data-nombre="${row.nombre}"
                  data-url="${route(
                      "lotes.destroy",
-                     row.id
+                     row.id,
                  )}"><i class="fa fa-trash"></i></button>
             `;
         },
@@ -167,11 +163,31 @@ const updateDatatable = () => {
 };
 
 onMounted(async () => {
-    datatable = initDataTable(
-        "#table-lote",
-        columns,
-        route("lotes.api")
-    );
+    datatable = initDataTable("#table-lote", columns, route("lotes.api"), {
+        createdRow: function (row, data) {
+            // $(row).addClass("bg-success");
+            if (
+                data.venta_lote &&
+                data.venta_lote.cliente &&
+                data.venta_lote.cliente.estado_cliente === "DISPENSA"
+            ) {
+                $(row).addClass("bg-orange");
+            }
+            if (
+                data.venta_lote &&
+                data.venta_lote.cliente &&
+                data.venta_lote.pagos_retrasados
+            ) {
+                $(row).addClass("bg-danger");
+            }
+            if (data.venta_lote && data.venta_lote.titulacion == "FINALIZADO") {
+                $(row).addClass("bg-brown");
+            }
+            if (data.venta_lote && data.venta_lote.titulacion == "EN PROCESO") {
+                $(row).addClass("bg-cyan");
+            }
+        },
+    });
     datatableInitialized.value = true;
     accionesRow();
 });
@@ -223,11 +239,9 @@ onBeforeUnmount(() => {
                     <table
                         id="table-lote"
                         width="100%"
-                        class="table table-striped table-bordered align-middle text-nowrap tabla_datos"
+                        class="table table-bordered align-middle text-nowrap tabla_datos"
                     >
-                        <thead>
-                       
-                        </thead>
+                        <thead></thead>
                         <tbody></tbody>
                     </table>
                 </div>

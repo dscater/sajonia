@@ -99,7 +99,7 @@ class LoteController extends Controller
     public function api(Request $request)
     {
         // Log::debug($request);
-        $lotes = Lote::with(["urbanizacion", "manzano"])->select("lotes.*");
+        $lotes = Lote::with(["venta_lote.cliente", "urbanizacion", "manzano"])->select("lotes.*");
         $lotes = $lotes->get();
         return response()->JSON([
             "data" => $lotes

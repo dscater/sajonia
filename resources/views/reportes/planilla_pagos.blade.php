@@ -155,6 +155,10 @@
             font-weight: bold;
             color: rgb(0, 192, 0);
         }
+
+        .text-rojo {
+            color: red;
+        }
     </style>
 </head>
 
@@ -193,6 +197,13 @@
             <p class="info_cliente"><strong>Fecha de Formalización:</strong>
                 {{ $venta_lote->fecha_formalizacion_t }}
             </p>
+
+            @if ($venta_lote->cliente->estado_cliente == 'DISPENSA')
+                <p class="info_cliente"><strong>Fecha de dispensa:</strong>
+                    {{ $venta_lote->cliente->fecha_estado_texto }} al
+                    {{ $venta_lote->cliente->fecha_n_texto }}
+                </p>
+            @endif
             @php
                 $venta_planillas = App\Models\VentaPlanilla::where('venta_lote_id', $venta_lote->id)->get();
             @endphp
@@ -202,7 +213,8 @@
                         <th width="8%">NRO. CUOTA</th>
                         <th>CUOTA</th>
                         <th>ESTADO PAGO</th>
-                        <th>FECHA PAGO</th>
+                        <th>FECHA PROGRAMADA DE PAGO</th>
+                        <th>FECHA DE PAGO</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -216,6 +228,10 @@
                             <td class="centreado {{ $venta_planilla->estado == 1 ? 'cancelado' : 'pendiente' }}">
                                 {{ $venta_planilla->estado == 1 ? 'CANCELADO' : 'PENDIENTE' }}</td>
                             <td class="centreado">{{ $venta_planilla->fecha_pago_t }}</td>
+                            <td
+                                class="centreado {{ $venta_planilla->fecha_pago_registro != 'SIN RETRASO' && $venta_planilla->estado == 0 ? 'text-rojo' : '' }}">
+                                {{ $venta_planilla->fecha_pago_registro }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
